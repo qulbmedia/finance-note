@@ -1,7 +1,0 @@
-{
-  "name": "TheNewApps",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "ionic-angular"
-}
