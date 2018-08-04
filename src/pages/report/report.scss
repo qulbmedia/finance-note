@@ -1,0 +1,73 @@
+page-report {
+
+	p {
+
+	}
+
+	.toolbar-background-md {
+    	border-color: #d85f70;
+    	background: #d85f70;
+	}
+
+	.toolbar-title-md {
+	    color: #fff;
+	}
+
+	.ion-md-arrow-back:before {
+    	color: #fff;
+	}
+
+	.ion-md-menu:before {
+	    color: #fff;
+	}
+
+	path.highcharts-point.highcharts-color-1 {
+    	fill: #d85f70;
+	}
+
+	text.highcharts-credits {
+    	display: none;
+	}
+
+	section.info {
+		margin-top: 0px;
+	}
+
+	.titlereport {
+		text-align: center;
+		font-size: 24px;
+		font-weight: 600;
+		margin-bottom: 15px;
+	}
+
+	.balancereport {
+		background-color: rgb(124, 181, 236);
+		height: 40px;
+		border-radius: 50%;
+		width: 40px;
+	}
+
+	.tabungankureport {
+		background-color: rgb(144, 237, 125);
+		height: 40px;
+		border-radius: 50%;
+		width: 40px;
+	}
+
+	.costreport {
+		background-color: #d85f70;
+		height: 40px;
+		border-radius: 50%;
+		width: 40px;
+	}
+
+	.detail {
+		text-align: center;
+	}
+
+	.btn-red {
+		background-color: #d85f70;
+		padding: 0 50px;
+	}
+
+}

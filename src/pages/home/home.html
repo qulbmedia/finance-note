@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <!-- <ion-title>Home</ion-title> -->
+  </ion-navbar>
+</ion-header>
+
+  <div class="titlehome">
+    Halo, <span class="boldhome">Amul</span>
+  </div>
+
+<ion-content padding class="bgred">
+
+  <ion-item>
+    <ion-label>Account</ion-label>
+    <ion-select [(ngModel)]="gender" (ionChange)="getAccountSelect($event)">
+      <ion-option value="new">Buat Baru</ion-option>
+      <ion-option *ngFor="let item of accountsData" [value]="item.id" >
+          {{item.name}}
+        </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <section>
+    <div class="firsthome">
+      <!-- <img src="assets/imgs/photo.png">
+      <div class="camerapic"><img src="assets/imgs/camera.svg" class="noneassets"></div> -->
+    </div>
+    
+  </section>
+
+  <section class="contenthome">
+    <h3>Your Balance | Rp</h3>
+    <h2>300.000.000</h2>
+    <p>
+      If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
+    </p>
+  </section>
+
+  <section class="categoryhome">
+    <div class="row">
+      <div class="col colnopadding">
+        <ion-card class="radius10" (click)="openTabungankuPage()">
+          <ion-card-header>
+            <img src="assets/imgs/wallet.svg">
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>TabunganKu</p>
+          </ion-card-content>
+
+        </ion-card>
+      </div>
+      <div class="col colnopadding">
+        <ion-card class="radius10" (click)="openCostPage()">
+          <ion-card-header>
+            <img src="assets/imgs/startup.svg">
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>Cost</p>
+          </ion-card-content>
+
+        </ion-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col colnopadding">
+        <ion-card class="radius10" (click)="openReportPage()">
+          <ion-card-header>
+            <img src="assets/imgs/diagram.svg">
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>Report</p>
+          </ion-card-content>
+
+        </ion-card>
+      </div>
+      <div class="col colnopadding">
+        <ion-card class="radius10" (click)="openSettingPage()">
+          <ion-card-header>
+            <img src="assets/imgs/controls.svg">
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>Setting</p>
+          </ion-card-content>
+
+        </ion-card>
+      </div>
+    </div>
+  </section>
+
+</ion-content>
