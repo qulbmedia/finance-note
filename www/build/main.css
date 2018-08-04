@@ -25678,6 +25678,43 @@ ion-navbar.toolbar {
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
 
+page-add-transaction .primary-select {
+  background-color: #d85f70;
+  color: #fff;
+  border-radius: 15px;
+}
+
+page-add-transaction .toolbar-background-md {
+  border-color: #d85f70;
+  background: #d85f70;
+}
+
+page-add-transaction .toolbar-title-md {
+  color: #fff;
+}
+
+page-add-transaction .ion-md-arrow-back:before {
+  color: #fff;
+}
+
+page-add-transaction .ion-md-menu:before {
+  color: #fff;
+}
+
+page-add-transaction .btn-red {
+  background-color: #d85f70;
+  padding: 20px 50px !important;
+}
+
+page-add-transaction ion-input input {
+  text-align: right;
+  /* IF YOU ALSO WANT TO PUSH PLACHEHOLDER TO THE RIGHT USE THE FOLLOWING, IF NOT JUST DELETE THE ::-webkit-input-placeholder*/
+}
+
+page-add-transaction ion-input input ::-webkit-input-placeholder {
+  text-align: right;
+}
+
 page-cost .toolbar-background-md {
   border-color: #d85f70;
   background: #d85f70;

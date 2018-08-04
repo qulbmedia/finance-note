@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -11,6 +12,7 @@ import { CostPage } from '../pages/cost/cost';
 import { HistoryPage } from '../pages/history/history';
 import { TabungankuPage } from '../pages/tabunganku/tabunganku';
 import { AddAccountPage } from '../pages/add-account/add-account';
+import { AddTransactionPage } from '../pages/add-transaction/add-transaction';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,11 +31,16 @@ import { LocalDataServicesProvider } from '../providers/local-data-services/loca
     CostPage,
     TabungankuPage,
     HistoryPage,
-    AddAccountPage
+    AddAccountPage,
+    AddTransactionPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot({
+      name: '__mydb',
+         driverOrder: ['indexeddb', 'sqlite', 'websql']
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -45,7 +52,8 @@ import { LocalDataServicesProvider } from '../providers/local-data-services/loca
     CostPage,
     TabungankuPage,
     HistoryPage,
-    AddAccountPage
+    AddAccountPage,
+    AddTransactionPage
   ],
   providers: [
     StatusBar,

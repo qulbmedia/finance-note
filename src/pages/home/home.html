@@ -8,7 +8,7 @@
 </ion-header>
 
   <div class="titlehome">
-    Halo, <span class="boldhome">Amul</span>
+    <!-- Halo, <span class="boldhome">Amul</span> -->
   </div>
 
 <ion-content padding class="bgred">
@@ -33,22 +33,47 @@
 
   <section class="contenthome">
     <h3>Your Balance | Rp</h3>
-    <h2>300.000.000</h2>
+    <h2 style="text-align: right;">300.000.000</h2>
     <p>
-      If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
+      <!-- If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way. -->
     </p>
   </section>
 
   <section class="categoryhome">
     <div class="row">
       <div class="col colnopadding">
-        <ion-card class="radius10" (click)="openTabungankuPage()">
+        <ion-card class="radius10" (click)="openAddTransaction()">
+          <ion-list>
+              <ion-list-header>
+                Latest
+              </ion-list-header>
+              <ion-item>
+                <h2 style="color: green">Pengeluaran</h2>
+                <i style="font-size: 9px;"> Pulsa<br>
+                Rp. 50.000</i>
+              </ion-item>
+              <ion-item>
+                <h2 style="color:firebrick">Cher</h2>
+                <i style="font-size: 9px;"> Sparepart<br>
+                  Rp. 1.200.000</i>
+              </ion-item>
+            </ion-list>
+
+        </ion-card>
+      </div>
+    </div>
+  </section>
+
+  <section class="categoryhome">
+    <div class="row">
+      <div class="col colnopadding">
+        <ion-card class="radius10" (click)="openAddTransaction()">
           <ion-card-header>
             <img src="assets/imgs/wallet.svg">
           </ion-card-header>
 
           <ion-card-content>
-            <p>TabunganKu</p>
+            <p>Tambah Transaksi</p>
           </ion-card-content>
 
         </ion-card>
@@ -60,7 +85,7 @@
           </ion-card-header>
 
           <ion-card-content>
-            <p>Cost</p>
+            <p>Catatan Transaksi</p>
           </ion-card-content>
 
         </ion-card>

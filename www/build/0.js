@@ -1,14 +1,14 @@
 webpackJsonp([0],{
 
-/***/ 278:
+/***/ 290:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddAccountPageModule", function() { return AddAccountPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabungankuPageModule", function() { return TabungankuPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__add_account__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tabunganku__ = __webpack_require__(55);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,23 +18,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var AddAccountPageModule = /** @class */ (function () {
-    function AddAccountPageModule() {
+var TabungankuPageModule = /** @class */ (function () {
+    function TabungankuPageModule() {
     }
-    AddAccountPageModule = __decorate([
+    TabungankuPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__add_account__["a" /* AddAccountPage */],
+                __WEBPACK_IMPORTED_MODULE_2__tabunganku__["a" /* TabungankuPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__add_account__["a" /* AddAccountPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__tabunganku__["a" /* TabungankuPage */]),
             ],
         })
-    ], AddAccountPageModule);
-    return AddAccountPageModule;
+    ], TabungankuPageModule);
+    return TabungankuPageModule;
 }());
 
-//# sourceMappingURL=add-account.module.js.map
+//# sourceMappingURL=tabunganku.module.js.map
 
 /***/ })
 

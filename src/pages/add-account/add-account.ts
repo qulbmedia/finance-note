@@ -19,7 +19,7 @@ export class AddAccountPage {
   addAccountForm: FormGroup;
   accountData = { name:"", type:"", currency:"",description:"", amount:0 , createdate:""};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,, public localServiceData:LocalDataServicesProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder , public localServiceData:LocalDataServicesProvider) {
 
     this.addAccountForm = this.formBuilder.group({
       name: [''],
@@ -37,7 +37,6 @@ export class AddAccountPage {
   saveData(){
 
     console.log(this.addAccountForm.value['name']);
-
     this.localServiceData.saveDataAccount(this.addAccountForm)
     .then((success) => {
       console.log(success);
