@@ -6,6 +6,7 @@ import { CostPage } from '../cost/cost';
 import { TabungankuPage } from '../tabunganku/tabunganku';
 import { AddAccountPage } from '../add-account/add-account';
 import { AddTransactionPage } from '../add-transaction/add-transaction';
+import { TransactionPage } from '../transaction/transaction';
 
 import { LocalDataServicesProvider } from '../../providers/local-data-services/local-data-services';
 
@@ -17,12 +18,22 @@ import { Toast } from '@ionic-native/toast';
 })
 export class HomePage {
   accountsData: any;
+  totalIncome : number;
 
   constructor(
     public navCtrl: NavController, 
     public localServiceData:LocalDataServicesProvider,
     private toast: Toast
   ) {
+    console.log("createAllTable ---------------");
+    this.localServiceData.createAllTable()
+    .then((success) => {
+      console.log("createAllTable");
+      console.log(success);
+    },(err) => {
+      console.warn(err);
+    });
+    console.log("------------------------------");
 
     this.localServiceData.getData('account')
     .then((success) => {
@@ -31,6 +42,32 @@ export class HomePage {
     },(err) => {
       console.warn(err);
     });
+    
+    var activeAccount   = localStorage.getItem("AccountActive");
+    if(activeAccount != null || activeAccount!= undefined){
+
+      // get transaction -----
+      this.localServiceData.getDataByAccountId('accounttransaction',activeAccount)
+      .then((success) => {
+        console.log(success);
+        this.accountsData   = success;
+      },(err) => {
+        console.warn(err);
+      });
+
+      // get total income -----
+      this.localServiceData.getDataTotalIncome('accounttransaction',activeAccount)
+      .then((success) => {
+        console.log("getDataTotalIncome");
+        console.log(success);
+        this.accountsData   = success;
+      },(err) => {
+        console.warn(err);
+      });
+
+    }else{
+      this.totalIncome    = 10000000;
+    }
 
   }
 
@@ -57,6 +94,10 @@ export class HomePage {
 
   openAddTransaction() {
   	this.navCtrl.push(AddTransactionPage);
+  }
+
+  openTransactionActivity(){
+  	this.navCtrl.push(TransactionPage);
   }
 
   openReportPage() {

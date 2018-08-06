@@ -15,7 +15,7 @@
 
   <ion-item>
     <ion-label>Account</ion-label>
-    <ion-select [(ngModel)]="gender" (ionChange)="getAccountSelect($event)">
+    <ion-select (ionChange)="getAccountSelect($event)">
       <ion-option value="new">Buat Baru</ion-option>
       <ion-option *ngFor="let item of accountsData" [value]="item.id" >
           {{item.name}}
@@ -32,8 +32,8 @@
   </section>
 
   <section class="contenthome">
-    <h3>Your Balance | Rp</h3>
-    <h2 style="text-align: right;">300.000.000</h2>
+    <h3>Your Balance</h3>
+    <h2 style="text-align: right;">{{totalIncome | currency:'IDR':false}}</h2>
     <p>
       <!-- If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way. -->
     </p>
@@ -42,7 +42,7 @@
   <section class="categoryhome">
     <div class="row">
       <div class="col colnopadding">
-        <ion-card class="radius10" (click)="openAddTransaction()">
+        <ion-card class="radius10" (click)="openTransactionActivity()">
           <ion-list>
               <ion-list-header>
                 Latest

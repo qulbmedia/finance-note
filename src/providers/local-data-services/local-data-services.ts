@@ -33,13 +33,19 @@ export class LocalDataServicesProvider {
         db.executeSql(
           'CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY, name TEXT, type TEXT, currency TEXT, description TEXT, amount INT, createdate TEXT )', []
         )
-        .then(res => console.log('Executed SQL'))
+        .then(res => {
+          console.log('Executed SQL :'+res);
+          createTableArr.push(res);
+        })
         .catch(e => console.log(e));
 
         db.executeSql(
-          'CREATE TABLE IF NOT EXISTS transaction(id INTEGER PRIMARY KEY, accountid TEXT, type TEXT, pay TEXT, bankname TEXT,bankaccountno TEXT,bankaccountname TEXT,category TEXT, amount INT, transactiondate TEXT, usage TEXT, description TEXT, createdate TEXT )', []
+          'CREATE TABLE IF NOT EXISTS accounttransaction(id INTEGER PRIMARY KEY, accountid INT, type TEXT, pay TEXT, bankname TEXT,bankaccountno TEXT,bankaccountname TEXT,category TEXT, amount INT, transactiondate TEXT, usage TEXT, description TEXT, createdate TEXT )', []
         )
-        .then(res => console.log('Executed SQL'))
+        .then(res => {
+          console.log('Executed SQL :'+res);
+          createTableArr.push(res);
+        })
         .catch(e => console.log(e));
 
         // db.executeSql('CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY, name TEXT, type TEXT, currency TEXT, description TEXT, amount INT, createdate TEXT )', [])
@@ -61,7 +67,7 @@ export class LocalDataServicesProvider {
         // db.executeSql('CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY, name TEXT, type TEXT, currency TEXT, description TEXT, amount INT, createdate TEXT )', [])
         // .then(res => console.log('Executed SQL'))
         // .catch(e => console.log(e));
-
+        resolve(createTableArr);
       }).catch(e => {
         reject(e);
       });
@@ -102,7 +108,7 @@ export class LocalDataServicesProvider {
         name: 'mypocket.db',
         location: 'default'
       }).then((db: SQLiteObject) => {
-        db.executeSql('SELECT FROM '+table+' WHERE id=?', [id])
+        db.executeSql('SELECT * FROM '+table+' WHERE id=?', [id])
         .then(res => {
           console.log(res);
           resolve(res);
@@ -118,25 +124,46 @@ export class LocalDataServicesProvider {
         name: 'mypocket.db',
         location: 'default'
       }).then((db: SQLiteObject) => {
-        db.executeSql('SELECT SUM(amount) AS totalIncome FROM expense WHERE type="Income"', [])
+        db.executeSql('SELECT SUM(amount) AS totalIncome FROM accounttransaction WHERE type = "in" ', [])
         .then(res => {
-          if(res.rows.length>0) {
-            this.totalIncome  = parseInt(res.rows.item(0).totalIncome);
-            this.balance      = this.totalIncome-this.totalExpense;
-          }
+          console.log(res);
+          // if(res.rows.length>0) {
+          //   this.totalIncome  = parseInt(res.rows.item(0).totalIncome);
+          //   this.balance      = this.totalIncome-this.totalExpense;
+          // }
         })
         .catch(e => reject(e));
       }).catch(e => reject(e));
     });
   }
 
-  getDataTotalExpense(table , type) {
+  getDataTotalIncome(table , accountid) {
     return new Promise((resolve, reject) => {
       this.sqlite.create({
         name: 'mypocket.db',
         location: 'default'
       }).then((db: SQLiteObject) => {
-        db.executeSql('SELECT SUM(amount) AS totalExpense FROM '+table+' WHERE type="'+type+'"', [])
+        db.executeSql('SELECT SUM(amount) AS totalExpense FROM '+table+' WHERE type=? AND accountid=?', ["in",accountid])
+        .then(res => {
+          console.log(res.rows.item(0).totalExpense);
+          if(res.rows.length>0) {
+            this.totalExpense = parseInt(res.rows.item(0).totalExpense);
+            this.balance = this.totalIncome-this.totalExpense;
+            console.log(this.totalExpense);
+            resolve(this.totalExpense);
+          }
+        })
+        .catch(e => reject(e));
+      }).catch(e => reject(e));
+    });
+  }
+  getDataTotalExpense(table , accountid) {
+    return new Promise((resolve, reject) => {
+      this.sqlite.create({
+        name: 'mypocket.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        db.executeSql('SELECT SUM(amount) AS totalExpense FROM '+table+' WHERE type="out" AND accountid=?', [accountid])
         .then(res => {
           if(res.rows.length>0) {
             this.totalExpense = parseInt(res.rows.item(0).totalExpense);
@@ -196,27 +223,28 @@ export class LocalDataServicesProvider {
   saveDataTransaction(DataForm) {
     var dateNow   = new Date();
     return new Promise((resolve, reject) => {
-      var bankname, bankaccountno,bankaccountnanme;
+      var accountid   = localStorage.getItem("AccountActive");
+      var bankname, bankaccountno, bankaccountname;
       if(DataForm.value['pay'] != "transfer"){
         bankname          = "-";
         bankaccountno     = "-";
-        bankaccountnanme  = "-";
+        bankaccountname   = "-";
       }else{
         bankname          = DataForm.value['bankname'];
         bankaccountno     = DataForm.value['bankaccountno'];
-        bankaccountnanme  = DataForm.value['bankaccountnanme'];
+        bankaccountname   = DataForm.value['bankaccountname'];
       }
       this.sqlite.create({
         name: 'mypocket.db',
         location: 'default'
       }).then((db: SQLiteObject) => {
-        db.executeSql('INSERT INTO transaction VALUES(NULL,?,?,?,?,?,?)',[
-          DataForm.value['name'],
+        db.executeSql('INSERT INTO accounttransaction VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?)',[
+          accountid,
           DataForm.value['type'],
           DataForm.value['pay'],
           bankname,
           bankaccountno,
-          bankaccountnanme,
+          bankaccountname,
           DataForm.value['category'],
           DataForm.value['amount'],
           DataForm.value['transactiondate'],
@@ -233,13 +261,29 @@ export class LocalDataServicesProvider {
       });
     });
   }
+
+  getDataByAccountId(table , accountid) {
+    return new Promise((resolve, reject) => {
+      this.sqlite.create({
+        name: 'mypocket.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        db.executeSql('SELECT * FROM '+table+' WHERE id=?', [accountid])
+        .then(res => {
+          console.log(res);
+          resolve(res);
+        })
+        .catch(e => reject(e));
+      }).catch(e => reject(e));
+    });
+  }
   
   deleteDataTransaction(id) {
     this.sqlite.create({
       name: 'mypocket.db',
       location: 'default'
     }).then((db: SQLiteObject) => {
-      db.executeSql('DELETE FROM account WHERE id=?', [id])
+      db.executeSql('DELETE FROM account WHERE accountid=?', [id])
       .then(res => {
         console.log(res);
         // this.getDataAccount();

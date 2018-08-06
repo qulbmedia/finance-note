@@ -13,6 +13,7 @@ import { HistoryPage } from '../pages/history/history';
 import { TabungankuPage } from '../pages/tabunganku/tabunganku';
 import { AddAccountPage } from '../pages/add-account/add-account';
 import { AddTransactionPage } from '../pages/add-transaction/add-transaction';
+import { TransactionPage } from '../pages/transaction/transaction';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -32,7 +33,8 @@ import { LocalDataServicesProvider } from '../providers/local-data-services/loca
     TabungankuPage,
     HistoryPage,
     AddAccountPage,
-    AddTransactionPage
+    AddTransactionPage,
+    TransactionPage
   ],
   imports: [
     BrowserModule,
@@ -53,7 +55,8 @@ import { LocalDataServicesProvider } from '../providers/local-data-services/loca
     TabungankuPage,
     HistoryPage,
     AddAccountPage,
-    AddTransactionPage
+    AddTransactionPage,
+    TransactionPage
   ],
   providers: [
     StatusBar,

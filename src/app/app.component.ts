@@ -10,6 +10,7 @@ import { SettingPage } from '../pages/setting/setting';
 import { CostPage } from '../pages/cost/cost';
 import { HistoryPage } from '../pages/history/history';
 import { TabungankuPage } from '../pages/tabunganku/tabunganku';
+import { LocalDataServicesProvider } from '../providers/local-data-services/local-data-services';
 
 @Component({
   templateUrl: 'app.html'
@@ -21,7 +22,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public localServiceData:LocalDataServicesProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -42,7 +43,18 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      // create table
+      // this.localServiceData.createAllTable()
+      // .then((success) => {
+      //   console.log("createAllTable");
+      //   console.log(success);
+      // },(err) => {
+      //   console.warn(err);
+      // });
     });
+
+
   }
 
   openPage(page) {
