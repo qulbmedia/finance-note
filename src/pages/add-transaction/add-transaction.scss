@@ -1,0 +1,44 @@
+page-add-transaction {
+
+	p {
+
+	}
+
+    .primary-select {
+    	background-color: #d85f70;
+        color: #fff;
+        border-radius: 15px;
+    }
+    
+	.toolbar-background-md {
+    	border-color: #d85f70;
+    	background: #d85f70;
+	}
+
+	.toolbar-title-md {
+	    color: #fff;
+	}
+
+	.ion-md-arrow-back:before {
+    	color: #fff;
+	}
+
+	.ion-md-menu:before {
+	    color: #fff;
+	}
+
+	.btn-red {
+		background-color: #d85f70;
+		padding: 20px 50px !important;
+    }
+    
+    ion-input {
+        input {
+          text-align: right;
+          /* IF YOU ALSO WANT TO PUSH PLACHEHOLDER TO THE RIGHT USE THE FOLLOWING, IF NOT JUST DELETE THE ::-webkit-input-placeholder*/
+          ::-webkit-input-placeholder {
+            text-align: right;
+          }
+        }
+    }
+}
