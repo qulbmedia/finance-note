@@ -85,6 +85,7 @@ export class LocalDataServicesProvider {
           for(var i=0; i<res.rows.length; i++) {
             console.log("DATA TABLE "+table+"::::");
             if(table == "account"){
+              console.log(">> table is account");
               this.datas.push({
                 id:res.rows.item(i).id,
                 name:res.rows.item(i).name,
@@ -94,6 +95,8 @@ export class LocalDataServicesProvider {
                 createdate:res.rows.item(i).createdate
               })
             }else if(table == "accounttransaction"){
+              console.log(">> table is accounttransaction");
+              console.log(res.rows.item(i).accountid);
               this.datas.push({
                 accountid:res.rows.item(i).accountid,
                 type:res.rows.item(i).type,
@@ -162,11 +165,31 @@ export class LocalDataServicesProvider {
         db.executeSql('SELECT SUM(amount) AS totalExpense FROM '+table+' WHERE type=? AND accountid=?', ["in",accountid])
         .then(res => {
           console.log(res.rows.item(0).totalExpense);
-          if(res.rows.length>0) {
-            this.totalExpense = parseInt(res.rows.item(0).totalExpense);
-            this.balance = this.totalIncome-this.totalExpense;
-            console.log(this.totalExpense);
-            resolve(this.totalExpense);
+          if(res.rows.item(0).totalExpense != null){
+            if(res.rows.length>0) {
+              this.totalExpense = parseInt(res.rows.item(0).totalExpense);
+              this.balance = this.totalIncome-this.totalExpense;
+              var result = {
+                message: "success",
+                value:this.totalExpense
+              }
+              console.log(result);
+              resolve(result);
+            }else{
+              var result = {
+                message: "failed",
+                value:0
+              }
+              console.log(result);
+              resolve(result);
+            }
+          }else{
+            var result = {
+              message: "failed",
+              value:0
+            }
+            console.log(result);
+            resolve(result);
           }
         })
         .catch(e => reject(e));

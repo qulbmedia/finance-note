@@ -75,11 +75,38 @@ export class AddTransactionPage {
 
     this.loading = this.loadingCtrl.create();
     this.loading.present();
+    console.log(this.PostData.value['type']);
 
     if (!this.PostData.value['type']){
       console.log(this.PostData.value['type']);
-    } else if (!this.PostData.value['type'].value['type']){
-      console.log(this.PostData.value['type']);
+      this.loading.dismiss().then( () => {
+        
+      });
+      let alert = this.alertCtrl.create({
+        message: "amount must be type",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+    } else if (!this.PostData.value['amount']){
+      console.log(this.PostData.value['amount']);
+      this.loading.dismiss().then( () => {
+        
+      });
+      let alert = this.alertCtrl.create({
+        message: "amount must be fill",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
     } else {
       this.localServiceData.saveDataTransaction(this.PostData)
       .then((success) => {
@@ -88,22 +115,11 @@ export class AddTransactionPage {
         console.log(err);
       });
       
-      // this.loading.dismiss().then( () => {
-      //   this.navCtrl.setRoot(RoomPage, {
-      //     nickname: this.data.email
-      //   });
-      // });
+      this.loading.dismiss().then( () => {
+        
+      });
 
-      // let alert = this.alertCtrl.create({
-      //   message: error.message,
-      //   buttons: [
-      //     {
-      //       text: "Ok",
-      //       role: 'cancel'
-      //     }
-      //   ]
-      // });
-      // alert.present();
+      // 
     }
   }
 }

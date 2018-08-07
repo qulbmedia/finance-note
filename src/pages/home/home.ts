@@ -50,17 +50,21 @@ export class HomePage {
       this.localServiceData.getDataByAccountId('accounttransaction',parseInt(activeAccount))
       .then((success) => {
         console.log(success);
-        this.accountsData   = success;
+        
       },(err) => {
         console.warn(err);
       });
 
       // get total income -----
       this.localServiceData.getDataTotalIncome('accounttransaction',parseInt(activeAccount))
-      .then((success) => {
+      .then((success:any) => {
         console.log("getDataTotalIncome");
         console.log(success);
-        this.accountsData   = success;
+        if(success.value == 0 || success.value == "0"){
+          this.totalIncome    = 0;
+        }else{
+          this.totalIncome    = success.value;
+        }
       },(err) => {
         console.warn(err);
       });
