@@ -38,13 +38,13 @@ export class AddTransactionPage {
     this.PostData.controls['type'].valueChanges.subscribe(
         (selectedValue) => {
           this.disableSelector  = false;
-          if(selectedValue == "in"){
+          if(selectedValue == "out"){
             this.categoryList = [
               { name:"Belanja",value:"shop",icon:""},
               { name:"Hutang",value:"borrow",icon:""},
               { name:"Tak Terduga",value:"other",icon:""}
             ];
-          }else if(selectedValue == "out"){
+          }else if(selectedValue == "in"){
             this.categoryList = [
               { name:"Gaji",value:"sallary",icon:""},
               { name:"Piutang",value:"borrows",icon:""},

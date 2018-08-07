@@ -10,7 +10,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 @Injectable()
 export class LocalDataServicesProvider {
 
-  accounts: any = [];
+  datas: any = [];
   expenses: any = [];
   totalIncome = 0;
   totalExpense = 0;
@@ -81,18 +81,34 @@ export class LocalDataServicesProvider {
         location: 'default'
       }).then((db: SQLiteObject) => {
         db.executeSql('SELECT * FROM '+table+' ORDER BY id DESC',[]).then(res => {
-          this.accounts = [];
+          this.datas    = [];
           for(var i=0; i<res.rows.length; i++) {
-            this.accounts.push({
-              id:res.rows.item(i).id,
-              name:res.rows.item(i).name,
-              type:res.rows.item(i).type,
-              description:res.rows.item(i).description,
-              amount:0,
-              createdate:res.rows.item(i).createdate
-            })
+            console.log("DATA TABLE "+table+"::::");
+            if(table == "account"){
+              this.datas.push({
+                id:res.rows.item(i).id,
+                name:res.rows.item(i).name,
+                type:res.rows.item(i).type,
+                description:res.rows.item(i).description,
+                amount:0,
+                createdate:res.rows.item(i).createdate
+              })
+            }else if(table == "accounttransaction"){
+              this.datas.push({
+                accountid:res.rows.item(i).accountid,
+                type:res.rows.item(i).type,
+                name:res.rows.item(i).name,
+                pay:res.rows.item(i).pay,
+                bankname:res.rows.item(i).bankname,
+                category:res.rows.item(i).category,
+                amount:res.rows.item(i).amount,
+                createdate:res.rows.item(i).createdate
+              })
+            }else{
+
+            }
           }
-          resolve(this.accounts);
+          resolve(this.datas);
         })
         .catch(e => {
           console.log(e);

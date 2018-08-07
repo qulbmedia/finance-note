@@ -47,7 +47,7 @@ export class HomePage {
     if(activeAccount != null || activeAccount!= undefined){
 
       // get transaction -----
-      this.localServiceData.getDataByAccountId('accounttransaction',activeAccount)
+      this.localServiceData.getDataByAccountId('accounttransaction',parseInt(activeAccount))
       .then((success) => {
         console.log(success);
         this.accountsData   = success;
@@ -56,7 +56,7 @@ export class HomePage {
       });
 
       // get total income -----
-      this.localServiceData.getDataTotalIncome('accounttransaction',activeAccount)
+      this.localServiceData.getDataTotalIncome('accounttransaction',parseInt(activeAccount))
       .then((success) => {
         console.log("getDataTotalIncome");
         console.log(success);
@@ -66,7 +66,7 @@ export class HomePage {
       });
 
     }else{
-      this.totalIncome    = 10000000;
+      this.totalIncome    = 0;
     }
 
   }
