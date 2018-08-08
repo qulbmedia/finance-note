@@ -18,7 +18,7 @@
     <ion-list>
 
       <ion-item class="primary-select">
-        <ion-label style="color: #fff;">Tipe Transaksi : </ion-label>
+        <ion-label style="color: #666;">Tipe Transaksi : </ion-label>
         <ion-select [formControl]="PostData.controls['type']" name="type">
           <ion-option value="in">Pemasukan</ion-option>
           <ion-option value="out">Pengeluaran</ion-option>
@@ -83,7 +83,7 @@
       </ion-item>
 
       <ion-item>
-        <button ion-button block color="secondary" (click)="addTransaction()">
+        <button ion-button class="btn-green" (click)="addTransaction()">
           Save
         </button>
       </ion-item>
@@ -92,4 +92,3 @@
   </form>
 
 </ion-content>
-

@@ -5,8 +5,8 @@ page-report {
 	}
 
 	.toolbar-background-md {
-    	border-color: #d85f70;
-    	background: #d85f70;
+    	border-color: #c93145;
+    	background: #c93145;
 	}
 
 	.toolbar-title-md {
@@ -22,7 +22,11 @@ page-report {
 	}
 
 	path.highcharts-point.highcharts-color-1 {
-    	fill: #d85f70;
+    	fill: #c93145;
+	}
+
+	path.highcharts-point.highcharts-color-2 {
+    	fill: #1cb545;
 	}
 
 	text.highcharts-credits {
@@ -48,14 +52,14 @@ page-report {
 	}
 
 	.tabungankureport {
-		background-color: rgb(144, 237, 125);
+		background-color: #1cb545;
 		height: 40px;
 		border-radius: 50%;
 		width: 40px;
 	}
 
 	.costreport {
-		background-color: #d85f70;
+		background-color: #c93145;
 		height: 40px;
 		border-radius: 50%;
 		width: 40px;
@@ -66,7 +70,7 @@ page-report {
 	}
 
 	.btn-red {
-		background-color: #d85f70;
+		background-color: #c93145;
 		padding: 0 50px;
 	}
 

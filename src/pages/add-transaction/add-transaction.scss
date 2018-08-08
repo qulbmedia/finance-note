@@ -5,14 +5,14 @@ page-add-transaction {
 	}
 
     .primary-select {
-    	background-color: #d85f70;
-        color: #fff;
+    	background-color: #fff;
+        color: #666;
         border-radius: 15px;
     }
     
 	.toolbar-background-md {
-    	border-color: #d85f70;
-    	background: #d85f70;
+    	border-color: #c93145;
+    	background: #c93145;
 	}
 
 	.toolbar-title-md {
@@ -27,10 +27,12 @@ page-add-transaction {
 	    color: #fff;
 	}
 
-	.btn-red {
-		background-color: #d85f70;
-		padding: 20px 50px !important;
-    }
+	.btn-green {
+    background-color: #1cb545;
+    padding: 20px 50px !important;
+    width: 100%;
+    margin-top: 30px;
+  }
     
     ion-input {
         input {
@@ -41,4 +43,9 @@ page-add-transaction {
           }
         }
     }
+
+  .text-input-md {
+    margin: 13px 0px;
+  }
+    
 }

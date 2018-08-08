@@ -5,12 +5,12 @@ page-home {
 	}
 
 	.bgred {
-		background-color: #d85f70;
+		background-color: #c93145;
 	}
 
 	.toolbar-background-md {
-    	border-color: #d85f70;
-    	background: #d85f70;
+    	border-color: #c93145;
+    	background: #c93145;
 	}
 
 	.ion-md-menu:before {
@@ -94,18 +94,35 @@ page-home {
 	}
 
 	section.categoryhome img {
-		height: 50px;
+		height: 40px;
 		margin: auto;
 	}
 
 	section.categoryhome p {
-		color: #666;
+		color: #fff;
 		font-weight: 600;
 		text-align: center;
+		line-height: 1.2;
+		font-size: 1.2rem;
 	}
 
 	.radius10 {
 		border-radius: 10px;
+	}
+
+	.card-md {
+		background: rgba(214, 92, 108, 0.8);
+		/*-webkit-box-shadow: 0px 0px 5px #d96381;*/
+		/*box-shadow: 0px 0px 5px #d96381;*/
+	}
+
+	.text-right {
+		text-align: right;
+	}
+
+	.marginbotmin1 {
+		margin-bottom: 0px;
+		text-align: center;
 	}
 
 }

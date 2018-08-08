@@ -5,8 +5,8 @@ page-tabunganku {
 	}
 
 	.toolbar-background-md {
-    	border-color: #d85f70;
-    	background: #d85f70;
+    	border-color: #c93145;
+    	background: #c93145;
 	}
 
 	.toolbar-title-md {
@@ -22,8 +22,15 @@ page-tabunganku {
 	}
 
 	.btn-red {
-		background-color: #d85f70;
+		background-color: #c93145;
 		padding: 20px 50px !important;
+	}
+
+	.btn-green {
+		background-color: #1cb545;
+		padding: 20px 50px !important;
+		width: 100%;
+		margin-top: 30px;
 	}
 
 }

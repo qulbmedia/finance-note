@@ -17,6 +17,7 @@ import { Toast } from '@ionic-native/toast';
   templateUrl: 'home.html'
 })
 export class HomePage {
+
   accountsData: any;
   totalIncome : number;
 
@@ -85,6 +86,18 @@ export class HomePage {
         console.log(success);
         localStorage.setItem("AccountActive",val);
 
+        this.localServiceData.getDataTotalIncome('accounttransaction',parseInt(val))
+        .then((success:any) => {
+          console.log("getDataTotalIncome");
+          console.log(success);
+          if(success.value == 0 || success.value == "0"){
+            this.totalIncome    = 0;
+          }else{
+            this.totalIncome    = success.value;
+          }
+        },(err) => {
+          console.warn(err);
+        });
         
       },(err) => {
         console.warn(err);

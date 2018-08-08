@@ -12,6 +12,8 @@ import { HistoryPage } from '../pages/history/history';
 import { TabungankuPage } from '../pages/tabunganku/tabunganku';
 import { LocalDataServicesProvider } from '../providers/local-data-services/local-data-services';
 
+import { TabsPage } from '../pages/tabs/tabs';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -28,7 +30,6 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage },
       { title: 'Tabunganku', component: TabungankuPage },
       { title: 'Cost', component: CostPage },
       { title: 'Report', component: ReportPage },

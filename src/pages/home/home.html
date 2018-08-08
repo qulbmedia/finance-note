@@ -25,18 +25,13 @@
 
   <section>
     <div class="firsthome">
-      <!-- <img src="assets/imgs/photo.png">
-      <div class="camerapic"><img src="assets/imgs/camera.svg" class="noneassets"></div> -->
     </div>
     
   </section>
 
   <section class="contenthome">
     <h3>Your Balance</h3>
-    <h2 style="text-align: right;">{{totalIncome | currency:'IDR':false}}</h2>
-    <p>
-      <!-- If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way. -->
-    </p>
+    <h2 style="text-align: right;">{{totalIncome | currency:'IDR ':false}}</h2>
   </section>
 
   <section class="categoryhome">
@@ -44,18 +39,30 @@
       <div class="col colnopadding">
         <ion-card class="radius10" (click)="openTransactionActivity()">
           <ion-list>
-              <ion-list-header>
-                Latest
+              <ion-list-header class="marginbotmin1">
+                Latest Information
               </ion-list-header>
               <ion-item>
-                <h2 style="color: green">Pengeluaran</h2>
-                <i style="font-size: 9px;"> Pulsa<br>
-                Rp. 50.000</i>
+                <h2 style="color: green">Pemasukan</h2>
+                <div class="row">
+                  <div class="col col-6">
+                    Gaji
+                  </div>
+                  <div class="col col-6 text-right">
+                    Rp. 50.000
+                  </div>
+                </div>
               </ion-item>
               <ion-item>
-                <h2 style="color:firebrick">Cher</h2>
-                <i style="font-size: 9px;"> Sparepart<br>
-                  Rp. 1.200.000</i>
+                <h2 style="color: red">Pengeluaran</h2>
+                <div class="row">
+                  <div class="col col-6">
+                    Pulsa
+                  </div>
+                  <div class="col col-6 text-right">
+                    Rp. 50.000
+                  </div>
+                </div>
               </ion-item>
             </ion-list>
 
