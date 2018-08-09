@@ -14,9 +14,9 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
-	<section>
+	<section style="padding-top: 10px;">
 		<div>
 			<ion-grid>
 			  <ion-row>
@@ -41,14 +41,19 @@
 		</div>
 		<div class="list-history">
 			<ion-list>
-			  <ion-item>
+			  <ion-item *ngFor="let item of transactionList" [ngStyle]="{'color':item.type === 'in' ? '#52c2a4' : '#f12c71' }">
 			    <ion-col item-start>
-			    	<h2>Topup Bank BCA</h2>
-			    	<p class="tabunganku">TabunganKu</p>
+			    	<h2>{{item.category}}</h2>
+			    	<!-- <p class="tabunganku">TabunganKu</p> -->
+						<p>{{item.description}}</p>
+						<p>{{ item.createdate | date }} </p>
 			    </ion-col>
-			    <ion-col item-end text-right>300.000</ion-col>
+			    <ion-col item-end text-right>
+						{{item.amount | currency:'IDR ':false}}
+						<i *ngIf="item.type === 'out'"> (-)</i> <i *ngIf="item.type === 'in'"> (+)</i>
+					</ion-col>
 			  </ion-item>
-			  <ion-item>
+			  <!-- <ion-item>
 			    <ion-col item-start>
 			    	<h2>Topup Bank BCA</h2>
 			    	<p class="tabunganku">TabunganKu</p>
@@ -68,7 +73,7 @@
 			    	<p class="tabunganku">TabunganKu</p>
 			    </ion-col>
 			    <ion-col item-end text-right>200.000.000</ion-col>
-			  </ion-item>
+			  </ion-item> -->
 			</ion-list>
 		</div>
 	</section>

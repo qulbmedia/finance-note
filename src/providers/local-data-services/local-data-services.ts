@@ -105,6 +105,7 @@ export class LocalDataServicesProvider {
                 bankname:res.rows.item(i).bankname,
                 category:res.rows.item(i).category,
                 amount:res.rows.item(i).amount,
+                description:res.rows.item(i).description,
                 createdate:res.rows.item(i).createdate
               })
             }else{
@@ -129,10 +130,75 @@ export class LocalDataServicesProvider {
       }).then((db: SQLiteObject) => {
         db.executeSql('SELECT * FROM '+table+' WHERE id=?', [id])
         .then(res => {
-          console.log(res);
-          resolve(res);
+          this.datas    = [];
+          for(var i=0; i<res.rows.length; i++) {
+            console.log("DATA TABLE "+table+"::::");
+            if(table == "account"){
+              console.log(">> table is account");
+              this.datas.push({
+                id:res.rows.item(i).id,
+                name:res.rows.item(i).name,
+                type:res.rows.item(i).type,
+                description:res.rows.item(i).description,
+                amount:0,
+                createdate:res.rows.item(i).createdate
+              })
+            }else if(table == "accounttransaction"){
+              console.log(">> table is accounttransaction");
+              console.log(res.rows.item(i).accountid);
+              this.datas.push({
+                accountid:res.rows.item(i).accountid,
+                type:res.rows.item(i).type,
+                name:res.rows.item(i).name,
+                pay:res.rows.item(i).pay,
+                bankname:res.rows.item(i).bankname,
+                category:res.rows.item(i).category,
+                amount:res.rows.item(i).amount,
+                description:res.rows.item(i).description,
+                createdate:res.rows.item(i).createdate
+              })
+            }else{
+
+            }
+          }
+          resolve(this.datas);
         })
         .catch(e => reject(e));
+      }).catch(e => reject(e));
+    });
+  }
+
+  getDataByType(type,accountid) {
+    return new Promise((resolve, reject) => {
+      this.sqlite.create({
+        name: 'mypocket.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        db.executeSql('SELECT * FROM accounttransaction WHERE type = ? ORDER BY id DESC',[type,accountid]).then(res => {
+          this.datas    = [];
+          for(var i=0; i<res.rows.length; i++) {
+            console.log("DATA TABLE "+type+"::::");
+            
+            console.log(">> table is accounttransaction");
+            console.log(res.rows.item(i).accountid);
+            this.datas.push({
+              accountid:res.rows.item(i).accountid,
+              type:res.rows.item(i).type,
+              name:res.rows.item(i).name,
+              pay:res.rows.item(i).pay,
+              bankname:res.rows.item(i).bankname,
+              category:res.rows.item(i).category,
+              amount:res.rows.item(i).amount,
+              description:res.rows.item(i).description,
+              createdate:res.rows.item(i).createdate
+            })
+          }
+          resolve(this.datas);
+        })
+        .catch(e => {
+          console.log(e);
+          reject(e);
+        });
       }).catch(e => reject(e));
     });
   }
@@ -162,16 +228,16 @@ export class LocalDataServicesProvider {
         name: 'mypocket.db',
         location: 'default'
       }).then((db: SQLiteObject) => {
-        db.executeSql('SELECT SUM(amount) AS totalExpense FROM '+table+' WHERE type=? AND accountid=?', ["in",accountid])
+        db.executeSql('SELECT SUM(amount) AS totalIncome FROM '+table+' WHERE type=? AND accountid=?', ["in",accountid])
         .then(res => {
-          console.log(res.rows.item(0).totalExpense);
-          if(res.rows.item(0).totalExpense != null){
+          console.log(res.rows.item(0).totalIncome);
+          if(res.rows.item(0).totalIncome != null){
             if(res.rows.length>0) {
-              this.totalExpense = parseInt(res.rows.item(0).totalExpense);
-              this.balance = this.totalIncome-this.totalExpense;
+              this.totalIncome = parseInt(res.rows.item(0).totalIncome);
+              // this.balance = this.totalIncome-this.totalIncome;
               var result = {
                 message: "success",
-                value:this.totalExpense
+                value:this.totalIncome
               }
               console.log(result);
               resolve(result);
@@ -202,12 +268,34 @@ export class LocalDataServicesProvider {
         name: 'mypocket.db',
         location: 'default'
       }).then((db: SQLiteObject) => {
-        db.executeSql('SELECT SUM(amount) AS totalExpense FROM '+table+' WHERE type="out" AND accountid=?', [accountid])
+        db.executeSql('SELECT SUM(amount) AS totalExpense FROM '+table+' WHERE type=? AND accountid=?', ["out",accountid])
         .then(res => {
-          if(res.rows.length>0) {
-            this.totalExpense = parseInt(res.rows.item(0).totalExpense);
-            this.balance = this.totalIncome-this.totalExpense;
-            resolve(res);
+          console.log(res.rows.item(0).totalExpense);
+          if(res.rows.item(0).totalExpense != null){
+            if(res.rows.length>0) {
+              this.totalExpense = parseInt(res.rows.item(0).totalExpense);
+              // this.balance = this.totalIncome-this.totalExpense;
+              var result = {
+                message: "success",
+                value:this.totalExpense
+              }
+              console.log(result);
+              resolve(result);
+            }else{
+              var result = {
+                message: "failed",
+                value:0
+              }
+              console.log(result);
+              resolve(result);
+            }
+          }else{
+            var result = {
+              message: "failed",
+              value:0
+            }
+            console.log(result);
+            resolve(result);
           }
         })
         .catch(e => reject(e));

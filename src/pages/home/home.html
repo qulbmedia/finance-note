@@ -15,7 +15,7 @@
 
   <ion-item>
     <ion-label>Account</ion-label>
-    <ion-select (ionChange)="getAccountSelect($event)">
+    <ion-select [(ngModel)]="accountDefault" name="accountDefault" (ionChange)="getAccountSelect($event)">
       <ion-option value="new">Buat Baru</ion-option>
       <ion-option *ngFor="let item of accountsData" [value]="item.id" >
           {{item.name}}
@@ -31,7 +31,7 @@
 
   <section class="contenthome">
     <h3>Your Balance</h3>
-    <h2 style="text-align: right;">{{totalIncome | currency:'IDR ':false}}</h2>
+    <h2 style="text-align: right;">{{saldo | currency:'IDR ':false}}</h2>
   </section>
 
   <section class="categoryhome">
@@ -43,24 +43,22 @@
                 Latest Information
               </ion-list-header>
               <ion-item>
-                <h2 style="color: green">Pemasukan</h2>
-                <div class="row">
+                <div class="row" style="color:teal">
                   <div class="col col-6">
-                    Gaji
+                    Total Pemasukan
                   </div>
                   <div class="col col-6 text-right">
-                    Rp. 50.000
+                    {{totalIncome | currency:'IDR ':false}}
                   </div>
                 </div>
               </ion-item>
               <ion-item>
-                <h2 style="color: red">Pengeluaran</h2>
-                <div class="row">
+                <div class="row" style="color: tomato">
                   <div class="col col-6">
-                    Pulsa
+                    Total Pengeluaran
                   </div>
                   <div class="col col-6 text-right">
-                    Rp. 50.000
+                    {{totalExpense | currency:'IDR ':false}}
                   </div>
                 </div>
               </ion-item>

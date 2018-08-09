@@ -16,7 +16,7 @@ import { LocalDataServicesProvider } from '../../providers/local-data-services/l
 })
 export class TransactionPage {
   transactionEvent  :string   = "all";
-
+  transactionList:any;
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -31,20 +31,60 @@ export class TransactionPage {
       console.warn(err);
     });
 
-    this.localServiceData.getData("accounttransaction")
-    .then((success) => {
-      console.log("getData transaction");
-      console.log(success);
-    },(err) => {
-      console.warn(err);
-    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TransactionPage');
+    this.getAllTransaction();
+  }
+
+  getAllTransaction(){
+
+    var activeAccount   = localStorage.getItem("AccountActive");
+    if(activeAccount != null || activeAccount!= undefined){
+      this.localServiceData.getDataById("accounttransaction",parseInt(activeAccount))
+      .then((success) => {
+        console.log("getData transaction");
+        console.log(success);
+        this.transactionList  = success;
+      },(err) => {
+        console.warn(err);
+      });
+    }else{
+      this.transactionList  = [];
+    }
+    
   }
 
   getTransactionSelect(val){
+    var activeAccount   = localStorage.getItem("AccountActive");
+    if(activeAccount != null || activeAccount!= undefined){
+      if(val == "in"){
+        this.localServiceData.getDataByType("in",parseInt(activeAccount))
+        .then((success) => {
+          console.log("getData transaction");
+          console.log(success);
+          this.transactionList  = success;
+        },(err) => {
+          console.warn(err);
+        });
+      }else if(val == "out"){
+        this.localServiceData.getDataByType("out",parseInt(activeAccount))
+        .then((success) => {
+          console.log("getData transaction");
+          console.log(success);
+          this.transactionList  = success;
+        },(err) => {
+          console.warn(err);
+        });
+      }else{
+        this.getAllTransaction();
+      }
+    }else{
+      
+    }
+
+    
 
   }
 }
