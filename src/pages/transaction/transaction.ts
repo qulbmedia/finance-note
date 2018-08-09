@@ -42,7 +42,7 @@ export class TransactionPage {
 
     var activeAccount   = localStorage.getItem("AccountActive");
     if(activeAccount != null || activeAccount!= undefined){
-      this.localServiceData.getDataById("accounttransaction",parseInt(activeAccount))
+      this.localServiceData.getDataByAccountId("accounttransaction",parseInt(activeAccount))
       .then((success) => {
         console.log("getData transaction");
         console.log(success);
