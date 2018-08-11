@@ -25,8 +25,9 @@ export class ReportPage {
   }
 
   ionViewDidLoad() {
-	console.log('ionViewDidLoad ReportPage');
-	var activeAccount   = localStorage.getItem("AccountActive");
+		// this.allTransaction();
+		console.log('ionViewDidLoad ReportPage');
+		var activeAccount   = localStorage.getItem("AccountActive");
     if(activeAccount != null || activeAccount!= undefined){
       	this.chartView(activeAccount);
     }else{
@@ -36,7 +37,7 @@ export class ReportPage {
   }
 
   chartView(account){
-		this.accountBalace(account,null).then((result)=>{
+		this.allTransaction(account,null).then((result)=>{
 			this.income 	= parseInt(result[0]);
 			this.expense 	= parseInt(result[1]);
 			this.balance 	= parseInt(result[0]) - parseInt(result[1]);
@@ -88,14 +89,110 @@ export class ReportPage {
 	
   }
 
-  accountBalace(val,periode){
+  // accountBalace(val,periode){
+	// 	var chartdata = [];
+  //   return new Promise((resolve, reject) => {
+	// 		this.accountDefault = val;
+		
+	// 		// get total income -----
+	// 		if(periode == null){
+	// 			this.localServiceData.getDataTotalIncome('accounttransaction',parseInt(val))
+	// 			.then((success:any) => {
+	// 				console.log("getDataTotalIncome");
+	// 				console.log(success);
+	// 				if(success.value == 0 || success.value == "0"){
+	// 					chartdata.push(0);
+	// 				}else{
+	// 					chartdata.push(success.value);
+	// 				}
+	// 			},(err) => {
+	// 				console.warn(err);
+	// 			});
+			
+	// 			// get total expense -----
+	// 			this.localServiceData.getDataTotalExpense('accounttransaction',parseInt(val))
+	// 			.then((success:any) => {
+	// 				console.log("getDataTotalIncome");
+	// 				console.log(success);
+	// 				if(success.value == 0 || success.value == "0"){
+	// 					chartdata.push(0);
+	// 				}else{
+	// 					chartdata.push(success.value);
+	// 					console.warn(success.value);
+	// 				}
+	// 			},(err) => {
+	// 				console.warn(err);
+	// 			});
+	// 		}else{
+	// 			this.localServiceData.getDataTotalIncomeByDate('accounttransaction',periode,parseInt(val))
+	// 			.then((success:any) => {
+	// 				console.log("getDataTotalIncome");
+	// 				console.log(success);
+	// 				if(success.value == 0 || success.value == "0"){
+	// 					chartdata.push(0);
+	// 				}else{
+	// 					chartdata.push(success.value);
+	// 				}
+	// 			},(err) => {
+	// 				console.warn(err);
+	// 			});
+			
+	// 			// get total expense -----
+	// 			this.localServiceData.getDataTotalExpenseByDate('accounttransaction',periode,parseInt(val))
+	// 			.then((success:any) => {
+	// 				console.log("getDataTotalIncome");
+	// 				console.log(success);
+	// 				if(success.value == 0 || success.value == "0"){
+	// 					chartdata.push(0);
+	// 				}else{
+	// 					chartdata.push(success.value);
+	// 					console.warn(success.value);
+	// 				}
+	// 			},(err) => {
+	// 				console.warn(err);
+	// 			});
+	// 		}
+
+	// 		setTimeout(() => {
+	// 			resolve(chartdata);
+	// 		}, 500);
+	// 	});
+	
+  // }
+
+  openHistoryPage() {
+  	this.navCtrl.push(HistoryPage);
+	}
+	
+	getPeriodSelect(period){
+
+		var activeAccount   = localStorage.getItem("AccountActive");
+		if(activeAccount != null || activeAccount!= undefined){
+			// this.accountBalace(activeAccount,val);
+			this.allTransaction(activeAccount,period);
+		}else{
+			this.allTransaction(activeAccount,null);
+		}
+	}
+
+	// allTransaction(periode,accountid){
+	// 	this.localServiceData.getTransactionByDate('in',periode,parseInt(accountid))
+	// 	.then((success:any) => {
+	// 		console.log(">>> getDataTotalIncome <<<");
+	// 		console.log(success);
+	// 	},(err) => {
+	// 		console.warn(err);
+	// 	});
+	// }
+
+	allTransaction(accountid,periode){
 		var chartdata = [];
     return new Promise((resolve, reject) => {
-			this.accountDefault = val;
+			this.accountDefault = accountid;
 		
 			// get total income -----
 			if(periode == null){
-				this.localServiceData.getDataTotalIncome('accounttransaction',parseInt(val))
+				this.localServiceData.getDataTotalIncome('accounttransaction',parseInt(accountid))
 				.then((success:any) => {
 					console.log("getDataTotalIncome");
 					console.log(success);
@@ -109,7 +206,7 @@ export class ReportPage {
 				});
 			
 				// get total expense -----
-				this.localServiceData.getDataTotalExpense('accounttransaction',parseInt(val))
+				this.localServiceData.getDataTotalExpense('accounttransaction',parseInt(accountid))
 				.then((success:any) => {
 					console.log("getDataTotalIncome");
 					console.log(success);
@@ -123,30 +220,19 @@ export class ReportPage {
 					console.warn(err);
 				});
 			}else{
-				this.localServiceData.getDataTotalIncomeByDate('accounttransaction',periode,parseInt(val))
+				this.localServiceData.getTransactionByDate('in',periode,parseInt(accountid))
 				.then((success:any) => {
-					console.log("getDataTotalIncome");
+					console.log(">>> getDataTotalIncome <<<");
 					console.log(success);
-					if(success.value == 0 || success.value == "0"){
-						chartdata.push(0);
-					}else{
-						chartdata.push(success.value);
-					}
 				},(err) => {
 					console.warn(err);
 				});
 			
 				// get total expense -----
-				this.localServiceData.getDataTotalExpenseByDate('accounttransaction',periode,parseInt(val))
+				this.localServiceData.getTransactionByDate('out',periode,parseInt(accountid))
 				.then((success:any) => {
-					console.log("getDataTotalIncome");
+					console.log(">>> getDataTotalIncome <<<");
 					console.log(success);
-					if(success.value == 0 || success.value == "0"){
-						chartdata.push(0);
-					}else{
-						chartdata.push(success.value);
-						console.warn(success.value);
-					}
 				},(err) => {
 					console.warn(err);
 				});
@@ -158,19 +244,5 @@ export class ReportPage {
 		});
 	
   }
-
-  openHistoryPage() {
-  	this.navCtrl.push(HistoryPage);
-	}
-	
-	getPeriodSelect(val){
-
-		var activeAccount   = localStorage.getItem("AccountActive");
-		if(activeAccount != null || activeAccount!= undefined){
-				this.accountBalace(activeAccount,val);
-			}else{
-				this.accountBalace(activeAccount,null);
-			}
-	}
 
 }

@@ -20,6 +20,11 @@ export class LocalDataServicesProvider {
   monthNow  = ("0" + (new Date().getMonth() + 1)).slice(-2);
   yearNow   = new Date().getFullYear();
 
+  today     = new Date();
+  hour      = new Date().getHours();
+  minute    = new Date().getMinutes();
+  second    = new Date().getSeconds();
+
   constructor(
     private sqlite: SQLite
   ) {
@@ -371,6 +376,59 @@ export class LocalDataServicesProvider {
     });
   }
 
+  getTransactionByDate(transactiontype, periode , accountid) {
+    if(periode == "year"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM accounttransaction WHERE createdate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+    }else if(periode == "month"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM accounttransaction WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+    }else if(periode == "week"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM accounttransaction WHERE createdate = datetime('now', '-7 day') AND type=? AND accountid=?";
+    }else if(periode == "day"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM accounttransaction WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+    }else{
+
+    }
+    console.log("getTransactionByDate :: "+sql);
+    return new Promise((resolve, reject) => {
+      this.sqlite.create({
+        name: 'mypocket.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        db.executeSql(sql, [transactiontype,accountid])
+        .then(res => {
+          console.log(res.rows.item(0).totalExpense);
+          if(res.rows.item(0).totalExpense != null){
+            if(res.rows.length>0) {
+              this.totalExpense = parseInt(res.rows.item(0).totalExpense);
+              // this.balance = this.totalIncome-this.totalExpense;
+              var result = {
+                message: "success",
+                value:this.totalExpense
+              }
+              console.log(result);
+              resolve(result);
+            }else{
+              var result = {
+                message: "failed",
+                value:0
+              }
+              console.log(result);
+              resolve(result);
+            }
+          }else{
+            var result = {
+              message: "failed",
+              value:0
+            }
+            console.log(result);
+            resolve(result);
+          }
+        })
+        .catch(e => reject(e));
+      }).catch(e => reject(e));
+    });
+  }
+
   getDataTotalExpenseByDate(table , periode , accountid) {
     if(periode == "year"){
       var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
@@ -521,6 +579,7 @@ export class LocalDataServicesProvider {
         bankaccountno     = DataForm.value['bankaccountno'];
         bankaccountname   = DataForm.value['bankaccountname'];
       }
+      console.log(DataForm.value['transactiondate']);
       this.sqlite.create({
         name: 'mypocket.db',
         location: 'default'
@@ -534,7 +593,7 @@ export class LocalDataServicesProvider {
           bankaccountname,
           DataForm.value['category'],
           DataForm.value['amount'],
-          DataForm.value['transactiondate'],
+          DataForm.value['transactiondate']+" "+this.hour+":"+this.minute+":"+this.second,
           DataForm.value['usage'],
           DataForm.value['description']
         ]).then(res => {
