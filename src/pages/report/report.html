@@ -21,7 +21,8 @@
       <ion-list>
         <ion-item>
           <ion-label>Sort by</ion-label>
-          <ion-select>
+
+          <ion-select [(ngModel)]="accountDefault" name="accountDefault" (ionChange)="getPeriodSelect($event)">
             <ion-option value="day">Day</ion-option>
             <ion-option value="week">Week</ion-option>
             <ion-option value="month">Month</ion-option>
@@ -47,21 +48,21 @@
               <div class="balancereport"></div>
             </ion-avatar>
             <h2>Balance</h2>
-            <p>300.000.000</p>
+            <p>{{balance | currency:'IDR ':false}}</p>
           </ion-item>
           <ion-item>
             <ion-avatar item-start>
               <div class="tabungankureport"></div>
             </ion-avatar>
-            <h2>TabunganKu</h2>
-            <p>4.000.000</p>
+            <h2>Income</h2>
+            <p>{{income | currency:'IDR ':false}}</p>
           </ion-item>
           <ion-item>
             <ion-avatar item-start>
               <div class="costreport"></div>
             </ion-avatar>
-            <h2>Cost</h2>
-            <p>2.000.000</p>
+            <h2>Expense</h2>
+            <p>{{expense | currency:'IDR ':false}}</p>
           </ion-item>
         </ion-list>
       </div>

@@ -32,10 +32,19 @@ export class HomePage {
     
 
   }
-
-  ionViewDidLoad() {
+  ionViewWillEnter(){
     console.log('ionViewDidLoad TransactionPage');
     
+    console.log("createAllTable ---------------");
+    this.localServiceData.createAllTable()
+    .then((success) => {
+      console.log("createAllTable");
+      console.log(success);
+    },(err) => {
+      console.warn(err);
+    });
+    console.log("------------------------------");
+    this.getAccount();
     var activeAccount   = localStorage.getItem("AccountActive");
     if(activeAccount != null || activeAccount!= undefined){
       this.getData(activeAccount);
@@ -44,7 +53,19 @@ export class HomePage {
       this.totalExpense   = 0;
       this.saldo          = 0;
     }
+  }
+  ionViewDidLoad() {
       
+  }
+  
+  getAccount(){
+    this.localServiceData.getData('account')
+    .then((success) => {
+      console.log(success);
+      this.accountsData   = success;
+    },(err) => {
+      console.warn(err);
+    });
   }
 
   getAccountSelect(val){
@@ -68,23 +89,6 @@ export class HomePage {
   }
 
   getData(val){
-    console.log("createAllTable ---------------");
-    this.localServiceData.createAllTable()
-    .then((success) => {
-      console.log("createAllTable");
-      console.log(success);
-    },(err) => {
-      console.warn(err);
-    });
-    console.log("------------------------------");
-
-    this.localServiceData.getData('account')
-    .then((success) => {
-      console.log(success);
-      this.accountsData   = success;
-    },(err) => {
-      console.warn(err);
-    });
     
     this.accountDefault = val;
     // get transaction -----
@@ -125,7 +129,7 @@ export class HomePage {
     });
     setTimeout(() => {
       this.saldo  = this.totalIncome - this.totalExpense;
-    }, 500);
+    }, 300);
 
   }
 

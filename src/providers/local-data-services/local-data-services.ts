@@ -16,6 +16,10 @@ export class LocalDataServicesProvider {
   totalExpense = 0;
   balance = 0;
 
+  dateNow   = ("0" + new Date().getDate()).slice(-2);
+  monthNow  = ("0" + (new Date().getMonth() + 1)).slice(-2);
+  yearNow   = new Date().getFullYear();
+
   constructor(
     private sqlite: SQLite
   ) {
@@ -87,26 +91,26 @@ export class LocalDataServicesProvider {
             if(table == "account"){
               console.log(">> table is account");
               this.datas.push({
-                id:res.rows.item(i).id,
-                name:res.rows.item(i).name,
-                type:res.rows.item(i).type,
-                description:res.rows.item(i).description,
-                amount:0,
-                createdate:res.rows.item(i).createdate
+                id          :res.rows.item(i).id,
+                name        :res.rows.item(i).name,
+                type        :res.rows.item(i).type,
+                description :res.rows.item(i).description,
+                amount      :0,
+                createdate  :res.rows.item(i).createdate
               })
             }else if(table == "accounttransaction"){
               console.log(">> table is accounttransaction");
               console.log(res.rows.item(i).accountid);
               this.datas.push({
-                accountid:res.rows.item(i).accountid,
-                type:res.rows.item(i).type,
-                name:res.rows.item(i).name,
-                pay:res.rows.item(i).pay,
-                bankname:res.rows.item(i).bankname,
-                category:res.rows.item(i).category,
-                amount:res.rows.item(i).amount,
-                description:res.rows.item(i).description,
-                createdate:res.rows.item(i).createdate
+                accountid   :res.rows.item(i).accountid,
+                type        :res.rows.item(i).type,
+                name        :res.rows.item(i).name,
+                pay         :res.rows.item(i).pay,
+                bankname    :res.rows.item(i).bankname,
+                category    :res.rows.item(i).category,
+                amount      :res.rows.item(i).amount,
+                description :res.rows.item(i).description,
+                createdate  :res.rows.item(i).createdate
               })
             }else{
 
@@ -308,6 +312,117 @@ export class LocalDataServicesProvider {
       }).catch(e => reject(e));
     });
   }
+
+  getDataTotalIncomeByDate(table , periode, accountid) {
+
+    console.log(this.dateNow);
+    console.log(this.monthNow);
+    console.log(this.yearNow);
+
+    if(periode == "year"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+    }else if(periode == "month"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+    }else if(periode == "week"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate = datetime('now', '-7 day') AND type=? AND accountid=?";
+    }else if(periode == "day"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+    }else{
+
+    }
+    return new Promise((resolve, reject) => {
+      this.sqlite.create({
+        name: 'mypocket.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        console.log(sql);
+        db.executeSql(sql, ['in',accountid])
+        .then(res => {
+          console.log(res.rows.item(0).totalIncome);
+          if(res.rows.item(0).totalIncome != null){
+            if(res.rows.length>0) {
+              this.totalIncome = parseInt(res.rows.item(0).totalIncome);
+              // this.balance = this.totalIncome-this.totalIncome;
+              var result = {
+                message: "success",
+                value:this.totalIncome
+              }
+              console.log(result);
+              resolve(result);
+            }else{
+              var result = {
+                message: "failed",
+                value:0
+              }
+              console.log(result);
+              resolve(result);
+            }
+          }else{
+            var result = {
+              message: "failed",
+              value:0
+            }
+            console.log(result);
+            resolve(result);
+          }
+        })
+        .catch(e => reject(e));
+      }).catch(e => reject(e));
+    });
+  }
+
+  getDataTotalExpenseByDate(table , periode , accountid) {
+    if(periode == "year"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+    }else if(periode == "month"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+    }else if(periode == "week"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate = datetime('now', '-7 day') AND type=? AND accountid=?";
+    }else if(periode == "day"){
+      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+    }else{
+
+    }
+    return new Promise((resolve, reject) => {
+      this.sqlite.create({
+        name: 'mypocket.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        db.executeSql(sql, ['out',accountid])
+        .then(res => {
+          console.log(res.rows.item(0).totalExpense);
+          if(res.rows.item(0).totalExpense != null){
+            if(res.rows.length>0) {
+              this.totalExpense = parseInt(res.rows.item(0).totalExpense);
+              // this.balance = this.totalIncome-this.totalExpense;
+              var result = {
+                message: "success",
+                value:this.totalExpense
+              }
+              console.log(result);
+              resolve(result);
+            }else{
+              var result = {
+                message: "failed",
+                value:0
+              }
+              console.log(result);
+              resolve(result);
+            }
+          }else{
+            var result = {
+              message: "failed",
+              value:0
+            }
+            console.log(result);
+            resolve(result);
+          }
+        })
+        .catch(e => reject(e));
+      }).catch(e => reject(e));
+    });
+  }
+
   getDataTotalExpense(table , accountid) {
     return new Promise((resolve, reject) => {
       this.sqlite.create({
@@ -359,13 +474,12 @@ export class LocalDataServicesProvider {
         name: 'mypocket.db',
         location: 'default'
       }).then((db: SQLiteObject) => {
-        db.executeSql('INSERT INTO account VALUES(NULL,?,?,?,?,?,?)',[
+        db.executeSql("INSERT INTO account VALUES(NULL,?,?,?,?,?,datetime('now','localtime') )",[
           DataForm.value['name'],
           DataForm.value['type'],
           DataForm.value['currency'],
           DataForm.value['description'],
-          0,
-          dateNow
+          0
         ]).then(res => {
           resolve(res);
         }).catch(e => {
@@ -411,7 +525,7 @@ export class LocalDataServicesProvider {
         name: 'mypocket.db',
         location: 'default'
       }).then((db: SQLiteObject) => {
-        db.executeSql('INSERT INTO accounttransaction VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?)',[
+        db.executeSql("INSERT INTO accounttransaction VALUES ( NULL,?,?,?,?,?,?,?,?,?,?,?,datetime('now','localtime') )",[
           accountid,
           DataForm.value['type'],
           DataForm.value['pay'],
@@ -422,8 +536,7 @@ export class LocalDataServicesProvider {
           DataForm.value['amount'],
           DataForm.value['transactiondate'],
           DataForm.value['usage'],
-          DataForm.value['description'],
-          dateNow
+          DataForm.value['description']
         ]).then(res => {
           resolve(res);
         }).catch(e => {

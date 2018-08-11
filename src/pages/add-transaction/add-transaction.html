@@ -49,7 +49,7 @@
       <div *ngIf="bankInfo" style="border: 1px solid #d85f70;">
         <ion-item>
           <ion-label stacked>Nama Bank</ion-label>
-          <ion-input type="number" [formControl]="PostData.controls['bankname']" name="bankname"></ion-input>
+          <ion-input type="text" [formControl]="PostData.controls['bankname']" name="bankname"></ion-input>
         </ion-item>
   
         <ion-item>
@@ -59,7 +59,7 @@
   
         <ion-item>
           <ion-label stacked>Atas nama</ion-label>
-          <ion-input type="number" [formControl]="PostData.controls['bankaccountname']" name="bankaccountname"></ion-input>
+          <ion-input type="text" [formControl]="PostData.controls['bankaccountname']" name="bankaccountname"></ion-input>
         </ion-item>
       </div>
 

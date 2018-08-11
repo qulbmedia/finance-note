@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { LocalDataServicesProvider } from '../../providers/local-data-services/local-data-services';
+
+import { Toast } from '@ionic-native/toast';
 /**
  * Generated class for the TransactionPage page.
  *
@@ -20,7 +22,8 @@ export class TransactionPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public localServiceData:LocalDataServicesProvider
+    public localServiceData:LocalDataServicesProvider,
+    private toastCtrl: ToastController
   ) {
 
     this.localServiceData.getDataTotalIncome("accounttransaction",1)
@@ -83,8 +86,19 @@ export class TransactionPage {
     }else{
       
     }
+  }
 
-    
-
+  presentToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'top'
+    });
+  
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+  
+    toast.present();
   }
 }

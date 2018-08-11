@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController,LoadingController,Loading  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController,LoadingController,Loading, ToastController  } from 'ionic-angular';
 
 import { LocalDataServicesProvider } from '../../providers/local-data-services/local-data-services';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -30,6 +30,7 @@ export class AddTransactionPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     private formBuilder: FormBuilder ,
     public localServiceData : LocalDataServicesProvider
@@ -73,53 +74,39 @@ export class AddTransactionPage {
 
   addTransaction(): void {
 
-    this.loading = this.loadingCtrl.create();
-    this.loading.present();
     console.log(this.PostData.value['type']);
 
     if (!this.PostData.value['type']){
       console.log(this.PostData.value['type']);
-      this.loading.dismiss().then( () => {
-        
-      });
-      let alert = this.alertCtrl.create({
-        message: "amount must be type",
-        buttons: [
-          {
-            text: "Ok",
-            role: 'cancel'
-          }
-        ]
-      });
-      alert.present();
+      this.presentToast("you must fill type");
     } else if (!this.PostData.value['amount']){
       console.log(this.PostData.value['amount']);
-      this.loading.dismiss().then( () => {
-        
-      });
-      let alert = this.alertCtrl.create({
-        message: "amount must be fill",
-        buttons: [
-          {
-            text: "Ok",
-            role: 'cancel'
-          }
-        ]
-      });
-      alert.present();
+      this.presentToast("you must fill amount");
     } else {
       this.localServiceData.saveDataTransaction(this.PostData)
       .then((success) => {
         console.log(success);
+        this.presentToast("success , transaction saved");
       },(err) => {
         console.log(err);
-      });
-      
-      this.loading.dismiss().then( () => {
-        
+        this.presentToast("failed , transaction not saved");
       });
 
-      // 
     }
+  }
+
+
+  presentToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'top'
+    });
+  
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+  
+    toast.present();
   }
 }
