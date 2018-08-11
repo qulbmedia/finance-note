@@ -17,7 +17,7 @@
 <ion-content>
 
 	<section style="padding-top: 10px;">
-		<div>
+		<!-- <div>
 			<ion-grid>
 			  <ion-row>
 			    <ion-col>
@@ -28,7 +28,7 @@
 			    </ion-col>
 			  </ion-row>
 			</ion-grid>
-    </div>
+    </div> -->
     <div>
 			<ion-item>
         <ion-label>Transaksi</ion-label>
@@ -37,6 +37,35 @@
           <ion-option value="in">Pemasukan</ion-option>
           <ion-option value="out">Pengeluaran</ion-option>
         </ion-select>
+      </ion-item>
+		</div>
+		<div>
+			<ion-item>
+        <ion-label>Periode Transaksi</ion-label>
+        <ion-select [(ngModel)]="transactionPeriod" name="transactionPeriod" (ionChange)="getPeriodSelect($event)">
+					<ion-option value="all">Semua</ion-option>
+					<ion-option value="day">Hari Ini</ion-option>
+					<ion-option value="month">Bulan Ini</ion-option>
+					<ion-option value="year">Tahun Ini</ion-option>
+					<ion-option value="custom">Kustom Pencarian</ion-option>
+				</ion-select>
+      </ion-item>
+		</div>
+		<div *ngIf="customPeriodInput">
+			<ion-item>
+				<ion-label>Dari</ion-label>
+				<ion-datetime placeholder="Pilih" displayFormat="DD/MM/YYYY" [(ngModel)]="startTransactionPeriod" name="startTransactionPeriod"></ion-datetime>
+			</ion-item><ion-item>
+				<ion-label>Sampai</ion-label>
+				<ion-datetime placeholder="Pilih" displayFormat="DD/MM/YYYY" [(ngModel)]="endTransactionPeriod" name="endTransactionPeriod" ></ion-datetime>
+			</ion-item>
+			<ion-item>
+        <button ion-button class="btn-green" (click)="getCustomPeriod()">
+          Cari
+				</button>
+				<button ion-button class="btn-green" (click)="getReset()">
+					Kembali ke default
+				</button>
       </ion-item>
 		</div>
 		<div class="list-history">

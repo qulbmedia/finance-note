@@ -89,77 +89,6 @@ export class ReportPage {
 	
   }
 
-  // accountBalace(val,periode){
-	// 	var chartdata = [];
-  //   return new Promise((resolve, reject) => {
-	// 		this.accountDefault = val;
-		
-	// 		// get total income -----
-	// 		if(periode == null){
-	// 			this.localServiceData.getDataTotalIncome('accounttransaction',parseInt(val))
-	// 			.then((success:any) => {
-	// 				console.log("getDataTotalIncome");
-	// 				console.log(success);
-	// 				if(success.value == 0 || success.value == "0"){
-	// 					chartdata.push(0);
-	// 				}else{
-	// 					chartdata.push(success.value);
-	// 				}
-	// 			},(err) => {
-	// 				console.warn(err);
-	// 			});
-			
-	// 			// get total expense -----
-	// 			this.localServiceData.getDataTotalExpense('accounttransaction',parseInt(val))
-	// 			.then((success:any) => {
-	// 				console.log("getDataTotalIncome");
-	// 				console.log(success);
-	// 				if(success.value == 0 || success.value == "0"){
-	// 					chartdata.push(0);
-	// 				}else{
-	// 					chartdata.push(success.value);
-	// 					console.warn(success.value);
-	// 				}
-	// 			},(err) => {
-	// 				console.warn(err);
-	// 			});
-	// 		}else{
-	// 			this.localServiceData.getDataTotalIncomeByDate('accounttransaction',periode,parseInt(val))
-	// 			.then((success:any) => {
-	// 				console.log("getDataTotalIncome");
-	// 				console.log(success);
-	// 				if(success.value == 0 || success.value == "0"){
-	// 					chartdata.push(0);
-	// 				}else{
-	// 					chartdata.push(success.value);
-	// 				}
-	// 			},(err) => {
-	// 				console.warn(err);
-	// 			});
-			
-	// 			// get total expense -----
-	// 			this.localServiceData.getDataTotalExpenseByDate('accounttransaction',periode,parseInt(val))
-	// 			.then((success:any) => {
-	// 				console.log("getDataTotalIncome");
-	// 				console.log(success);
-	// 				if(success.value == 0 || success.value == "0"){
-	// 					chartdata.push(0);
-	// 				}else{
-	// 					chartdata.push(success.value);
-	// 					console.warn(success.value);
-	// 				}
-	// 			},(err) => {
-	// 				console.warn(err);
-	// 			});
-	// 		}
-
-	// 		setTimeout(() => {
-	// 			resolve(chartdata);
-	// 		}, 500);
-	// 	});
-	
-  // }
-
   openHistoryPage() {
   	this.navCtrl.push(HistoryPage);
 	}
@@ -220,7 +149,7 @@ export class ReportPage {
 					console.warn(err);
 				});
 			}else{
-				this.localServiceData.getTransactionByDate('in',periode,parseInt(accountid))
+				this.localServiceData.getTotalTransactionByDate('in',periode,parseInt(accountid))
 				.then((success:any) => {
 					console.log(">>> getDataTotalIncome <<<");
 					console.log(success);
@@ -229,7 +158,7 @@ export class ReportPage {
 				});
 			
 				// get total expense -----
-				this.localServiceData.getTransactionByDate('out',periode,parseInt(accountid))
+				this.localServiceData.getTotalTransactionByDate('out',periode,parseInt(accountid))
 				.then((success:any) => {
 					console.log(">>> getDataTotalIncome <<<");
 					console.log(success);

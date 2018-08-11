@@ -14,6 +14,7 @@ export class LocalDataServicesProvider {
   expenses: any = [];
   totalIncome = 0;
   totalExpense = 0;
+  total   = 0;
   balance = 0;
 
   dateNow   = ("0" + new Date().getDate()).slice(-2);
@@ -56,26 +57,6 @@ export class LocalDataServicesProvider {
           createTableArr.push(res);
         })
         .catch(e => console.log(e));
-
-        // db.executeSql('CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY, name TEXT, type TEXT, currency TEXT, description TEXT, amount INT, createdate TEXT )', [])
-        // .then(res => console.log('Executed SQL'))
-        // .catch(e => console.log(e));
-
-        // db.executeSql('CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY, name TEXT, type TEXT, currency TEXT, description TEXT, amount INT, createdate TEXT )', [])
-        // .then(res => console.log('Executed SQL'))
-        // .catch(e => console.log(e));
-
-        // db.executeSql('CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY, name TEXT, type TEXT, currency TEXT, description TEXT, amount INT, createdate TEXT )', [])
-        // .then(res => console.log('Executed SQL'))
-        // .catch(e => console.log(e));
-
-        // db.executeSql('CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY, name TEXT, type TEXT, currency TEXT, description TEXT, amount INT, createdate TEXT )', [])
-        // .then(res => console.log('Executed SQL'))
-        // .catch(e => console.log(e));
-
-        // db.executeSql('CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY, name TEXT, type TEXT, currency TEXT, description TEXT, amount INT, createdate TEXT )', [])
-        // .then(res => console.log('Executed SQL'))
-        // .catch(e => console.log(e));
         resolve(createTableArr);
       }).catch(e => {
         reject(e);
@@ -113,6 +94,7 @@ export class LocalDataServicesProvider {
                 pay         :res.rows.item(i).pay,
                 bankname    :res.rows.item(i).bankname,
                 category    :res.rows.item(i).category,
+                transactiondate:res.rows.item(i).transactiondate,
                 amount      :res.rows.item(i).amount,
                 description :res.rows.item(i).description,
                 createdate  :res.rows.item(i).createdate
@@ -120,6 +102,96 @@ export class LocalDataServicesProvider {
             }else{
 
             }
+          }
+          resolve(this.datas);
+        })
+        .catch(e => {
+          console.log(e);
+          reject(e);
+        });
+      }).catch(e => reject(e));
+    });
+  }
+
+  getTransactionByTransactionDate(periode , accountid) {
+    if(periode == "year"){
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND accountid=?";
+    }else if(periode == "month"){
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') AND accountid=?";
+    }else if(periode == "day"){
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') AND accountid=?";
+    }else{
+
+    }
+    console.log("getTransactionByDate :: "+sql);
+    return new Promise((resolve, reject) => {
+      this.sqlite.create({
+        name: 'mypocket.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        db.executeSql(sql, [accountid])
+        .then(res => {
+          this.datas    = [];
+          for(var i=0; i<res.rows.length; i++) {
+            this.datas.push({
+              accountid   :res.rows.item(i).accountid,
+              type        :res.rows.item(i).type,
+              name        :res.rows.item(i).name,
+              pay         :res.rows.item(i).pay,
+              bankname    :res.rows.item(i).bankname,
+              category    :res.rows.item(i).category,
+              transactiondate:res.rows.item(i).transactiondate,
+              amount      :res.rows.item(i).amount,
+              description :res.rows.item(i).description,
+              createdate  :res.rows.item(i).createdate
+            })
+          }
+          resolve(this.datas);
+        })
+        .catch(e => reject(e));
+      }).catch(e => reject(e));
+    });
+  }
+
+  getTransactionDataFilter(periode,type,accountid,startDate,endDate) {
+    if(type == "all" || type == ""){
+      var typequery = "";
+    }else{
+      var typequery = "AND type = '"+type+"'";
+    }
+    if(periode == "year"){
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND accountid=?";
+    }else if(periode == "month"){
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') AND accountid=?";
+    }else if(periode == "day"){
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') AND accountid=?";
+    }else if(periode == "custom"){
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+startDate+" 00:00:00') AND datetime('"+endDate+" 23:59:59') "+typequery+" AND accountid=?";
+    }else if(periode == "all"){
+      var sql   = "SELECT * FROM accounttransaction WHERE accountid=? AND "+typequery;
+    }else{
+
+    }
+    return new Promise((resolve, reject) => {
+      this.sqlite.create({
+        name: 'mypocket.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        db.executeSql(sql,[accountid]).then(res => {
+          this.datas    = [];
+          for(var i=0; i<res.rows.length; i++) {
+            this.datas.push({
+              accountid   :res.rows.item(i).accountid,
+              type        :res.rows.item(i).type,
+              name        :res.rows.item(i).name,
+              pay         :res.rows.item(i).pay,
+              bankname    :res.rows.item(i).bankname,
+              category    :res.rows.item(i).category,
+              transactiondate:res.rows.item(i).transactiondate,
+              amount      :res.rows.item(i).amount,
+              description :res.rows.item(i).description,
+              createdate  :res.rows.item(i).createdate
+            })
           }
           resolve(this.datas);
         })
@@ -162,6 +234,7 @@ export class LocalDataServicesProvider {
                 pay:res.rows.item(i).pay,
                 bankname:res.rows.item(i).bankname,
                 category:res.rows.item(i).category,
+                transactiondate:res.rows.item(i).transactiondate,
                 amount:res.rows.item(i).amount,
                 description:res.rows.item(i).description,
                 createdate:res.rows.item(i).createdate
@@ -208,6 +281,7 @@ export class LocalDataServicesProvider {
                 pay:res.rows.item(i).pay,
                 bankname:res.rows.item(i).bankname,
                 category:res.rows.item(i).category,
+                transactiondate:res.rows.item(i).transactiondate,
                 amount:res.rows.item(i).amount,
                 description:res.rows.item(i).description,
                 createdate:res.rows.item(i).createdate
@@ -376,19 +450,21 @@ export class LocalDataServicesProvider {
     });
   }
 
-  getTransactionByDate(transactiontype, periode , accountid) {
+  getTotalTransactionByDate(transactiontype, periode , accountid) {
     if(periode == "year"){
-      var sql   = "SELECT SUM(amount) AS totalIncome FROM accounttransaction WHERE createdate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+      var sql   = "SELECT SUM(amount) AS total FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
     }else if(periode == "month"){
-      var sql   = "SELECT SUM(amount) AS totalIncome FROM accounttransaction WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+      var sql   = "SELECT SUM(amount) AS total FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
     }else if(periode == "week"){
-      var sql   = "SELECT SUM(amount) AS totalIncome FROM accounttransaction WHERE createdate = datetime('now', '-7 day') AND type=? AND accountid=?";
+
+      var sql   = "SELECT SUM(amount) AS total FROM accounttransaction WHERE transactiondate BETWEEN datetime('now','weekday 1') AND datetime('now','localtime') AND type=? AND accountid=?";
     }else if(periode == "day"){
-      var sql   = "SELECT SUM(amount) AS totalIncome FROM accounttransaction WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
+      var sql   = "SELECT SUM(amount) AS total FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
     }else{
 
     }
     console.log("getTransactionByDate :: "+sql);
+    console.log("transactiontype :: "+transactiontype+" AND accountid :: "+accountid);
     return new Promise((resolve, reject) => {
       this.sqlite.create({
         name: 'mypocket.db',
@@ -396,66 +472,14 @@ export class LocalDataServicesProvider {
       }).then((db: SQLiteObject) => {
         db.executeSql(sql, [transactiontype,accountid])
         .then(res => {
-          console.log(res.rows.item(0).totalExpense);
-          if(res.rows.item(0).totalExpense != null){
+          console.log(res.rows.item(0));
+          if(res.rows.item(0).total != null){
             if(res.rows.length>0) {
-              this.totalExpense = parseInt(res.rows.item(0).totalExpense);
-              // this.balance = this.totalIncome-this.totalExpense;
+              this.total = parseInt(res.rows.item(0).total);
+              // this.balance = this.total-this.total;
               var result = {
                 message: "success",
-                value:this.totalExpense
-              }
-              console.log(result);
-              resolve(result);
-            }else{
-              var result = {
-                message: "failed",
-                value:0
-              }
-              console.log(result);
-              resolve(result);
-            }
-          }else{
-            var result = {
-              message: "failed",
-              value:0
-            }
-            console.log(result);
-            resolve(result);
-          }
-        })
-        .catch(e => reject(e));
-      }).catch(e => reject(e));
-    });
-  }
-
-  getDataTotalExpenseByDate(table , periode , accountid) {
-    if(periode == "year"){
-      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
-    }else if(periode == "month"){
-      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
-    }else if(periode == "week"){
-      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate = datetime('now', '-7 day') AND type=? AND accountid=?";
-    }else if(periode == "day"){
-      var sql   = "SELECT SUM(amount) AS totalIncome FROM "+table+" WHERE createdate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') AND type=? AND accountid=?";
-    }else{
-
-    }
-    return new Promise((resolve, reject) => {
-      this.sqlite.create({
-        name: 'mypocket.db',
-        location: 'default'
-      }).then((db: SQLiteObject) => {
-        db.executeSql(sql, ['out',accountid])
-        .then(res => {
-          console.log(res.rows.item(0).totalExpense);
-          if(res.rows.item(0).totalExpense != null){
-            if(res.rows.length>0) {
-              this.totalExpense = parseInt(res.rows.item(0).totalExpense);
-              // this.balance = this.totalIncome-this.totalExpense;
-              var result = {
-                message: "success",
-                value:this.totalExpense
+                value:this.total
               }
               console.log(result);
               resolve(result);

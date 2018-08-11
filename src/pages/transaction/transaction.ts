@@ -17,8 +17,14 @@ import { Toast } from '@ionic-native/toast';
   templateUrl: 'transaction.html',
 })
 export class TransactionPage {
-  transactionEvent  :string   = "all";
-  transactionList:any;
+  transactionEvent    :string   = "all";
+  transactionPeriod   :string   = "all";
+  transactionList     :any;
+
+  customPeriodInput;
+  startTransactionPeriod;
+  endTransactionPeriod;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -42,7 +48,6 @@ export class TransactionPage {
   }
 
   getAllTransaction(){
-
     var activeAccount   = localStorage.getItem("AccountActive");
     if(activeAccount != null || activeAccount!= undefined){
       this.localServiceData.getDataByAccountId("accounttransaction",parseInt(activeAccount))
@@ -56,35 +61,91 @@ export class TransactionPage {
     }else{
       this.transactionList  = [];
     }
-    
+  }
+
+  getReset(){
+    this.transactionEvent         = "all";
+    this.transactionPeriod        = "all";
+    this.customPeriodInput        = false;
+    this.startTransactionPeriod   = "";
+    this.endTransactionPeriod     = "";
+    this.getAllTransaction();
   }
 
   getTransactionSelect(val){
+    this.transactionEvent = val;
+
+    console.log("transactionType :: "+this.transactionEvent);
+    console.log("transactionPeriode :: "+this.transactionPeriod);
     var activeAccount   = localStorage.getItem("AccountActive");
     if(activeAccount != null || activeAccount!= undefined){
-      if(val == "in"){
-        this.localServiceData.getDataByType("in",parseInt(activeAccount))
-        .then((success) => {
-          console.log("getData transaction");
-          console.log(success);
-          this.transactionList  = success;
-        },(err) => {
-          console.warn(err);
-        });
-      }else if(val == "out"){
-        this.localServiceData.getDataByType("out",parseInt(activeAccount))
-        .then((success) => {
-          console.log("getData transaction");
-          console.log(success);
-          this.transactionList  = success;
-        },(err) => {
-          console.warn(err);
-        });
-      }else{
-        this.getAllTransaction();
-      }
+      
+        // this.localServiceData.getDataByType(val,parseInt(activeAccount))
+        // .then((success) => {
+        //   console.log("getData transaction");
+        //   console.log(success);
+        //   this.transactionList  = success;
+        // },(err) => {
+        //   console.warn(err);
+        // });
+      this.localServiceData.getTransactionDataFilter(this.transactionPeriod,this.transactionEvent,activeAccount,"","")
+      .then((success) => {
+        console.log("getData transaction");
+        console.log(success);
+        this.transactionList  = success;
+      },(err) => {
+        console.warn(err);
+      });
+
     }else{
       
+    }
+  }
+
+  getPeriodSelect(value){
+    this.transactionPeriod = value;
+    if(this.transactionEvent == null){
+      this.presentToast("Anda harus memilih Transaksi terlebih dahulu");
+    }else{
+      if(value == "custom"){
+        this.customPeriodInput  = true;
+      }else{
+        this.customPeriodInput  = false;
+        console.log("transactionType :: "+this.transactionEvent);
+        console.log("transactionPeriode :: "+this.transactionPeriod);
+  
+        var activeAccount   = localStorage.getItem("AccountActive");
+        if(activeAccount != null || activeAccount!= undefined){
+          this.localServiceData.getTransactionDataFilter(this.transactionPeriod,this.transactionEvent,activeAccount,"","")
+          .then((success) => {
+            console.log("getData transaction");
+            console.log(success);
+            this.transactionList  = success;
+          },(err) => {
+            console.warn(err);
+          });
+        }
+      }
+    }
+    
+  }
+
+  getCustomPeriod(){
+    console.log("transactionType :: "+this.transactionEvent);
+    console.log("transactionPeriode :: "+this.transactionPeriod);
+    console.log("startTransactionPeriod :: "+this.startTransactionPeriod);
+    console.log("endTransactionPeriod :: "+this.endTransactionPeriod);
+
+    var activeAccount   = localStorage.getItem("AccountActive");
+    if(activeAccount != null || activeAccount!= undefined){
+      this.localServiceData.getTransactionDataFilter(this.transactionPeriod,this.transactionEvent,activeAccount,this.startTransactionPeriod,this.endTransactionPeriod)
+      .then((success) => {
+        console.log("getData transaction");
+        console.log(success);
+        this.transactionList  = success;
+      },(err) => {
+        console.warn(err);
+      });
     }
   }
 
