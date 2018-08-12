@@ -160,15 +160,15 @@ export class LocalDataServicesProvider {
       var typequery = "AND type = '"+type+"'";
     }
     if(periode == "year"){
-      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') AND accountid=?";
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-01-01 00:00:00') AND datetime('now','localtime') "+typequery+" AND accountid=?";
     }else if(periode == "month"){
-      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') AND accountid=?";
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-01 00:00:00') AND datetime('now','localtime') "+typequery+" AND accountid=?";
     }else if(periode == "day"){
-      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') AND accountid=?";
+      var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+this.yearNow+"-"+this.monthNow+"-"+this.dateNow+" 00:00:00') AND datetime('now','localtime') "+typequery+" AND accountid=?";
     }else if(periode == "custom"){
       var sql   = "SELECT * FROM accounttransaction WHERE transactiondate BETWEEN datetime('"+startDate+" 00:00:00') AND datetime('"+endDate+" 23:59:59') "+typequery+" AND accountid=?";
     }else if(periode == "all"){
-      var sql   = "SELECT * FROM accounttransaction WHERE accountid=? AND "+typequery;
+      var sql   = "SELECT * FROM accounttransaction WHERE accountid=? "+typequery;
     }else{
 
     }
