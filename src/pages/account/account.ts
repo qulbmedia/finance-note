@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { LocalDataServicesProvider } from '../../providers/local-data-services/local-data-services';
+import { InteractionProvider } from '../../providers/interaction/interaction';
 /**
  * Generated class for the AccountPage page.
  *
@@ -19,7 +20,8 @@ export class AccountPage {
   constructor(
     public navCtrl: NavController, 
     public localServiceData:LocalDataServicesProvider,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public interaction : InteractionProvider
   ) {
   }
 
@@ -43,15 +45,22 @@ export class AccountPage {
     console.log(id);
   }
 
-  removeItem(id){
+  deleteItem(id){
     console.log(id);
-    this.localServiceData.deleteData('account')
+    this.interaction.confirmAlert("Perhatian","Apakah anda yakin menghapus akun ini?, semua data dan catatan akan terhapus")
     .then((success) => {
-      console.log(success);
-      this.accountList   = success;
+      this.localServiceData.deleteData('account')
+      .then((success) => {
+        console.log(success);
+        this.interaction.toast("success , transaction saved");
+      },(err) => {
+        console.warn(err);
+        this.interaction.toast("failed , transaction not saved");
+      });
     },(err) => {
       console.warn(err);
     });
+    
   }
 
 }
