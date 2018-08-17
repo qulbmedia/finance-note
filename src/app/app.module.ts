@@ -11,6 +11,7 @@ import { SettingPage } from '../pages/setting/setting';
 import { CostPage } from '../pages/cost/cost';
 import { HistoryPage } from '../pages/history/history';
 import { TabungankuPage } from '../pages/tabunganku/tabunganku';
+import { AccountPage } from '../pages/account/account';
 import { AddAccountPage } from '../pages/add-account/add-account';
 import { AddTransactionPage } from '../pages/add-transaction/add-transaction';
 import { TransactionPage } from '../pages/transaction/transaction';
@@ -23,6 +24,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { SQLite } from '@ionic-native/sqlite';
 import { Toast } from '@ionic-native/toast';
 import { LocalDataServicesProvider } from '../providers/local-data-services/local-data-services';
+import { InteractionProvider } from '../providers/interaction/interaction';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { LocalDataServicesProvider } from '../providers/local-data-services/loca
     CostPage,
     TabungankuPage,
     HistoryPage,
+    AccountPage,
     AddAccountPage,
     AddTransactionPage,
     TransactionPage
@@ -56,6 +59,7 @@ import { LocalDataServicesProvider } from '../providers/local-data-services/loca
     CostPage,
     TabungankuPage,
     HistoryPage,
+    AccountPage,
     AddAccountPage,
     AddTransactionPage,
     TransactionPage
@@ -66,7 +70,8 @@ import { LocalDataServicesProvider } from '../providers/local-data-services/loca
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     SQLite,
     Toast,
-    LocalDataServicesProvider
+    LocalDataServicesProvider,
+    InteractionProvider
   ]
 })
 export class AppModule {}

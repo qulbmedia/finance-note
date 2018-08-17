@@ -9,6 +9,7 @@ import { ReportPage } from '../pages/report/report';
 import { SettingPage } from '../pages/setting/setting';
 import { CostPage } from '../pages/cost/cost';
 import { HistoryPage } from '../pages/history/history';
+import { AccountPage } from '../pages/account/account';
 import { TabungankuPage } from '../pages/tabunganku/tabunganku';
 import { LocalDataServicesProvider } from '../providers/local-data-services/local-data-services';
 
@@ -30,6 +31,7 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
+      { title: 'Account', component: AccountPage },
       { title: 'Tabunganku', component: TabungankuPage },
       { title: 'Cost', component: CostPage },
       { title: 'Report', component: ReportPage },

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController,LoadingController,Loading, ToastController  } from 'ionic-angular';
 
 import { LocalDataServicesProvider } from '../../providers/local-data-services/local-data-services';
+import { InteractionProvider } from '../../providers/interaction/interaction';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 /**
@@ -33,7 +34,8 @@ export class AddTransactionPage {
     private toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     private formBuilder: FormBuilder ,
-    public localServiceData : LocalDataServicesProvider
+    public localServiceData : LocalDataServicesProvider,
+    public interaction : InteractionProvider
   ) {
     this.disableSelector  = true;
     this.PostData.controls['type'].valueChanges.subscribe(
@@ -78,35 +80,22 @@ export class AddTransactionPage {
 
     if (!this.PostData.value['type']){
       console.log(this.PostData.value['type']);
-      this.presentToast("you must fill type");
+      this.interaction.toast("you must fill type");
     } else if (!this.PostData.value['amount']){
       console.log(this.PostData.value['amount']);
-      this.presentToast("you must fill amount");
+      this.interaction.toast("you must fill amount");
     } else {
       this.localServiceData.saveDataTransaction(this.PostData)
       .then((success) => {
         console.log(success);
-        this.presentToast("success , transaction saved");
+        this.interaction.toast("success , transaction saved");
+        this.formBuilder.group({ type:"" , pay:"" ,bankname:"",bankaccountno:"",bankaccountname:"", category:"" , amount:"" , transactiondate:"" , usage:"" , description:"" });
       },(err) => {
         console.log(err);
-        this.presentToast("failed , transaction not saved");
+        this.interaction.toast("failed , transaction not saved");
       });
 
     }
   }
-
-
-  presentToast(message) {
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 2000,
-      position: 'top'
-    });
   
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-  
-    toast.present();
-  }
 }
