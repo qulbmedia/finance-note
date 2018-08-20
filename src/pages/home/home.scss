@@ -75,18 +75,18 @@ page-home {
 
 	.contenthome h2 {
 		margin-top: 0;
-		color: #fff;
+		// color: #fff;
 		font-weight: 600;
 	}
 
 	.contenthome h3 {
 		font-size: 16px;
-		color: #fff;
+		// color: #fff;
 		margin-bottom: 0;
 	}
 
 	.contenthome p {
-		color: #fff;
+		// color: #fff;
 	}
 
 	.colnopadding {
@@ -123,6 +123,19 @@ page-home {
 	.marginbotmin1 {
 		margin-bottom: 0px;
 		text-align: center;
+	}
+
+
+	path.highcharts-point.highcharts-color-1 {
+    	fill: #c93145;
+	}
+
+	path.highcharts-point.highcharts-color-2 {
+    	fill: #1cb545;
+	}
+
+	text.highcharts-credits {
+    	display: none;
 	}
 
 }

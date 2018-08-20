@@ -11,7 +11,7 @@
     <!-- Halo, <span class="boldhome">Amul</span> -->
   </div>
 
-<ion-content padding class="bgred">
+<ion-content class="bgred">
 
   <ion-item>
     <ion-label>Account</ion-label>
@@ -30,8 +30,8 @@
   </section>
 
   <section class="contenthome">
-    <h3>Your Balance</h3>
-    <h2 style="text-align: right;">{{saldo | currency:'IDR ':false}}</h2>
+    <!-- <h3>Your Balance</h3>
+    <h2 style="text-align: right;">{{saldo | currency:'IDR ':false}}</h2> -->
   </section>
 
   <section class="categoryhome">
@@ -39,26 +39,48 @@
       <div class="col colnopadding">
         <ion-card class="radius10" (click)="openTransactionActivity()">
           <ion-list>
-              <ion-list-header class="marginbotmin1">
-                Latest Information
-              </ion-list-header>
-              <ion-item>
-                <div class="row" style="color:teal">
-                  <div class="col col-6">
-                    Total Pemasukan
-                  </div>
-                  <div class="col col-6 text-right">
-                    {{totalIncome | currency:'IDR ':false}}
-                  </div>
+            <ion-item>
+              <div class="row" style="color:teal;font-weight: 500;">
+                <div class="col col-6">
+                  Your Balance
                 </div>
-              </ion-item>
+                <div class="col col-6 text-right">
+                  {{saldo | currency:'IDR ':false}}
+                </div>
+              </div>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </div>
+    </div>
+  </section>
+  
+  <section class="categoryhome">
+    <div class="row">
+      <div class="col colnopadding">
+        <ion-card class="radius10" (click)="openTransactionActivity()">
+          <ion-list>
+              <!-- <ion-list-header class="marginbotmin1">
+                Ringkasan Bulan {{monthNow}}
+              </ion-list-header> -->
               <ion-item>
-                <div class="row" style="color: tomato">
+                <div class="row">
                   <div class="col col-6">
-                    Total Pengeluaran
+                    <div id="pieChart" style="display: block;"></div>
                   </div>
                   <div class="col col-6 text-right">
-                    {{totalExpense | currency:'IDR ':false}}
+                    <p style="color:teal;text-align:left !important;">
+                      Total Masuk {{totalIncome | currency:'IDR ':false}}
+                    </p>
+                    <p style="color: tomato;text-align:left !important;">
+                      Total Keluar {{totalExpense | currency:'IDR ':false}}
+                    </p>
+                    <p>
+                      Riwayat Transaksi
+                    </p>
+                    <p *ngFor="let item of transactionList" [ngStyle]="{'color':item.type === 'in' ? 'teal' : 'tomato' }">
+                      {{item.category}} {{item.amount | currency:'IDR ':false}}
+                    </p>
                   </div>
                 </div>
               </ion-item>
@@ -70,7 +92,7 @@
   </section>
 
   <section class="categoryhome">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col colnopadding">
         <ion-card class="radius10" (click)="openAddTransaction()">
           <ion-card-header>
@@ -95,7 +117,7 @@
 
         </ion-card>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col colnopadding">
         <ion-card class="radius10" (click)="openReportPage()">
@@ -123,5 +145,8 @@
       </div>
     </div>
   </section>
+  <ion-fab bottom right>
+    <button ion-fab color="lightyellow" (click)="openAddTransaction()"><ion-icon name="md-add"></ion-icon></button>
+  </ion-fab>
 
 </ion-content>

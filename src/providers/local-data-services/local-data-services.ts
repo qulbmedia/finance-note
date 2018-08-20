@@ -297,6 +297,53 @@ export class LocalDataServicesProvider {
     });
   }
 
+  getDataByAccountIdLimit(table , accountid, limit) {
+    return new Promise((resolve, reject) => {
+      this.sqlite.create({
+        name: 'mypocket.db',
+        location: 'default'
+      }).then((db: SQLiteObject) => {
+        db.executeSql('SELECT * FROM '+table+' WHERE accountid=? LIMIT '+limit, [accountid])
+        .then(res => {
+          this.datas    = [];
+          for(var i=0; i<res.rows.length; i++) {
+            console.log("DATA TABLE "+table+"::::");
+            if(table == "account"){
+              console.log(">> table is account");
+              this.datas.push({
+                id:res.rows.item(i).id,
+                name:res.rows.item(i).name,
+                type:res.rows.item(i).type,
+                description:res.rows.item(i).description,
+                amount:0,
+                createdate:res.rows.item(i).createdate
+              })
+            }else if(table == "accounttransaction"){
+              console.log(">> table is accounttransaction");
+              console.log(res.rows.item(i).accountid);
+              this.datas.push({
+                accountid:res.rows.item(i).accountid,
+                type:res.rows.item(i).type,
+                name:res.rows.item(i).name,
+                pay:res.rows.item(i).pay,
+                bankname:res.rows.item(i).bankname,
+                category:res.rows.item(i).category,
+                transactiondate:res.rows.item(i).transactiondate,
+                amount:res.rows.item(i).amount,
+                description:res.rows.item(i).description,
+                createdate:res.rows.item(i).createdate
+              })
+            }else{
+
+            }
+          }
+          resolve(this.datas);
+        })
+        .catch(e => reject(e));
+      }).catch(e => reject(e));
+    });
+  }
+
   getDataByType(type,accountid) {
     return new Promise((resolve, reject) => {
       this.sqlite.create({

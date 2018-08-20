@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ReportPage } from '../report/report';
 import { SettingPage } from '../setting/setting';
@@ -10,40 +10,39 @@ import { TransactionPage } from '../transaction/transaction';
 
 import { LocalDataServicesProvider } from '../../providers/local-data-services/local-data-services';
 
-import { Toast } from '@ionic-native/toast';
+import * as HighCharts from 'highcharts';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
+  @ViewChild('pieCanvas') pieCanvas;
 
   accountsData: any;
   totalIncome : number;
   totalExpense: number;
   saldo       : number;
+  monthNow    : string;
   accountDefault;
+  pieChart: any;
+  transactionList     :any;
 
   constructor(
     public navCtrl: NavController, 
-    public localServiceData:LocalDataServicesProvider,
-    private toast: Toast
+    public localServiceData:LocalDataServicesProvider
   ) {
     
 
   }
   ionViewWillEnter(){
     console.log('ionViewDidLoad TransactionPage');
-    
-    console.log("createAllTable ---------------");
-    this.localServiceData.createAllTable()
-    .then((success) => {
-      console.log("createAllTable");
-      console.log(success);
-    },(err) => {
-      console.warn(err);
-    });
-    console.log("------------------------------");
+    const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+    const d = new Date();
+    this.monthNow   = monthNames[d.getMonth()];
+
     this.getAccount();
     var activeAccount   = localStorage.getItem("AccountActive");
     if(activeAccount != null || activeAccount!= undefined){
@@ -55,7 +54,13 @@ export class HomePage {
     }
   }
   ionViewDidLoad() {
-      
+    this.localServiceData.createAllTable()
+    .then((success) => {
+      console.log("createAllTable");
+      console.log(success);
+    },(err) => {
+      console.warn(err);
+    });
   }
   
   getAccount(){
@@ -81,9 +86,6 @@ export class HomePage {
         
       },(err) => {
         console.warn(err);
-        this.toast.show(err, '5000', 'center').subscribe(
-          toast => { console.log(toast)}
-        );
       });
     }
   }
@@ -127,10 +129,70 @@ export class HomePage {
     },(err) => {
       console.warn(err);
     });
+
     setTimeout(() => {
       this.saldo  = this.totalIncome - this.totalExpense;
-    }, 300);
+      this.chartView(parseInt(val));
+    }, 500);
+    this.getAllTransaction();
 
+  }
+  
+  getAllTransaction(){
+    var activeAccount   = localStorage.getItem("AccountActive");
+    if(activeAccount != null || activeAccount!= undefined){
+      this.localServiceData.getDataByAccountIdLimit("accounttransaction",parseInt(activeAccount),5)
+      .then((success) => {
+        console.log("getData transaction");
+        console.log(success);
+        this.transactionList  = success;
+      },(err) => {
+        console.warn(err);
+      });
+    }else{
+      this.transactionList  = [];
+    }
+  }
+
+  chartView(account){
+		var myChart = HighCharts.chart('pieChart', {
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+      },
+      title: {
+        text: ''
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: false,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: false
+          },
+          showInLegend: false
+        }
+      },
+      series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+          name: 'Balance',
+          y: this.totalIncome,
+          sliced: true,
+          selected: true
+        }, {
+          name: 'Expense',
+          y: this.totalExpense
+        }]
+      }]
+    });
+	
   }
 
   openAddTransaction() {

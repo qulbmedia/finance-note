@@ -32,7 +32,6 @@ export class ReportPage {
       	this.chartView(activeAccount);
     }else{
 			this.chartView(null);
-			
 		}
   }
 
@@ -116,7 +115,7 @@ export class ReportPage {
 
 	allTransaction(accountid,periode){
 		var chartdata = [];
-    return new Promise((resolve, reject) => {
+    	return new Promise((resolve, reject) => {
 			this.accountDefault = accountid;
 		
 			// get total income -----
@@ -172,6 +171,6 @@ export class ReportPage {
 			}, 500);
 		});
 	
-  }
+  	}
 
 }
