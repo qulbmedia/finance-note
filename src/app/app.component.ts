@@ -13,7 +13,7 @@ import { AccountPage } from '../pages/account/account';
 import { TabungankuPage } from '../pages/tabunganku/tabunganku';
 import { LocalDataServicesProvider } from '../providers/local-data-services/local-data-services';
 
-import { TabsPage } from '../pages/tabs/tabs';
+// import { TabsPage } from '../pages/tabs/tabs';
 
 @Component({
   templateUrl: 'app.html'
